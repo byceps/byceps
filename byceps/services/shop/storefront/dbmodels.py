@@ -8,6 +8,7 @@ byceps.services.shop.storefront.dbmodels
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 
@@ -27,16 +28,16 @@ class DbStorefront(db.Model):
 
     __tablename__ = 'shop_storefronts'
 
-    id: Mapped[StorefrontID] = mapped_column(db.UnicodeText, primary_key=True)
+    id: Mapped[StorefrontID] = mapped_column(UnicodeText, primary_key=True)
     shop_id: Mapped[ShopID] = mapped_column(
-        db.UnicodeText, ForeignKey('shops.id'), index=True
+        UnicodeText, ForeignKey('shops.id'), index=True
     )
     catalog_id: Mapped[CatalogID | None] = mapped_column(
-        db.Uuid, ForeignKey('shop_catalogs.id')
+        Uuid, ForeignKey('shop_catalogs.id')
     )
     catalog: Mapped[DbCatalog | None] = relationship()
     order_number_sequence_id: Mapped[OrderNumberSequenceID] = mapped_column(
-        db.Uuid, ForeignKey('shop_order_number_sequences.id')
+        Uuid, ForeignKey('shop_order_number_sequences.id')
     )
     closed: Mapped[bool]
 

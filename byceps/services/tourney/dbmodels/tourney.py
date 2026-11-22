@@ -10,6 +10,7 @@ from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -25,15 +26,15 @@ class DbTourney(db.Model):
     __tablename__ = 'tourneys'
     __table_args__ = (db.UniqueConstraint('category_id', 'title'),)
 
-    id: Mapped[TourneyID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[TourneyID] = mapped_column(Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, ForeignKey('parties.id'), index=True
+        UnicodeText, ForeignKey('parties.id'), index=True
     )
-    title: Mapped[str] = mapped_column(db.UnicodeText)
-    subtitle: Mapped[str | None] = mapped_column(db.UnicodeText)
-    logo_url: Mapped[str | None] = mapped_column(db.UnicodeText)
+    title: Mapped[str] = mapped_column(UnicodeText)
+    subtitle: Mapped[str | None] = mapped_column(UnicodeText)
+    logo_url: Mapped[str | None] = mapped_column(UnicodeText)
     category_id: Mapped[TourneyCategoryID] = mapped_column(
-        db.Uuid,
+        Uuid,
         ForeignKey('tourney_categories.id'),
         index=True,
         nullable=False,

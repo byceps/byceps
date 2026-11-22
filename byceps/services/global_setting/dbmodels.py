@@ -7,6 +7,7 @@ byceps.services.global_setting.dbmodels
 """
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.types import UnicodeText
 
 from byceps.database import db
 from byceps.util.instances import ReprBuilder
@@ -17,8 +18,8 @@ class DbGlobalSetting(db.Model):
 
     __tablename__ = 'global_settings'
 
-    name: Mapped[str] = mapped_column(db.UnicodeText, primary_key=True)
-    value: Mapped[str] = mapped_column(db.UnicodeText)
+    name: Mapped[str] = mapped_column(UnicodeText, primary_key=True)
+    value: Mapped[str] = mapped_column(UnicodeText)
 
     def __init__(self, name: str, value: str) -> None:
         self.name = name

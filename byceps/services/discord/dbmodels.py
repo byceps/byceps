@@ -9,6 +9,7 @@ byceps.services.discord.dbmodels
 from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 
@@ -25,13 +26,13 @@ class DbDiscordServer(db.Model):
 
     __tablename__ = 'discord_servers'
 
-    id: Mapped[DiscordServerID] = mapped_column(db.Uuid, primary_key=True)
-    name: Mapped[str] = mapped_column(db.UnicodeText)
-    guild_id: Mapped[DiscordGuildID] = mapped_column(db.UnicodeText)
-    invitation_url: Mapped[str | None] = mapped_column(db.UnicodeText)
-    bot_token: Mapped[str | None] = mapped_column(db.UnicodeText)
-    client_id: Mapped[str | None] = mapped_column(db.UnicodeText)
-    client_secret: Mapped[str | None] = mapped_column(db.UnicodeText)
+    id: Mapped[DiscordServerID] = mapped_column(Uuid, primary_key=True)
+    name: Mapped[str] = mapped_column(UnicodeText)
+    guild_id: Mapped[DiscordGuildID] = mapped_column(UnicodeText)
+    invitation_url: Mapped[str | None] = mapped_column(UnicodeText)
+    bot_token: Mapped[str | None] = mapped_column(UnicodeText)
+    client_id: Mapped[str | None] = mapped_column(UnicodeText)
+    client_secret: Mapped[str | None] = mapped_column(UnicodeText)
     enabled: Mapped[bool]
 
     def __init__(
@@ -73,9 +74,7 @@ class DbDiscordServerPresenceStats(db.Model):
 
     __tablename__ = 'discord_server_presence_stats'
 
-    server_id: Mapped[DiscordServerID] = mapped_column(
-        db.Uuid, primary_key=True
-    )
+    server_id: Mapped[DiscordServerID] = mapped_column(Uuid, primary_key=True)
     updated_at: Mapped[datetime]
     member_count: Mapped[int]
     presence_count: Mapped[int]

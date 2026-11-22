@@ -12,6 +12,7 @@ from uuid import UUID
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -25,17 +26,17 @@ class DbUserGroup(db.Model):
     __tablename__ = 'user_groups'
     __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
 
-    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, ForeignKey('parties.id'), index=True
+        UnicodeText, ForeignKey('parties.id'), index=True
     )
     created_at: Mapped[datetime]
     creator_id: Mapped[UserID] = mapped_column(
-        db.Uuid, ForeignKey('users.id'), unique=True
+        Uuid, ForeignKey('users.id'), unique=True
     )
     creator: Mapped[DbUser] = relationship()
-    title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
-    description: Mapped[str | None] = mapped_column(db.UnicodeText)
+    title: Mapped[str] = mapped_column(UnicodeText, unique=True)
+    description: Mapped[str | None] = mapped_column(UnicodeText)
 
     members = association_proxy('memberships', 'user')
 
@@ -64,15 +65,13 @@ class DbUserGroupMembership(db.Model):
 
     __tablename__ = 'user_group_memberships'
 
-    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     created_at: Mapped[datetime]
-    group_id: Mapped[UUID] = mapped_column(
-        db.Uuid, ForeignKey('user_groups.id')
-    )
+    group_id: Mapped[UUID] = mapped_column(Uuid, ForeignKey('user_groups.id'))
     group: Mapped[DbUserGroup] = relationship(
         collection_class=set, backref='memberships'
     )
-    user_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
+    user_id: Mapped[UserID] = mapped_column(Uuid, ForeignKey('users.id'))
     user: Mapped[DbUser] = relationship(backref='group_membership')
 
     def __init__(

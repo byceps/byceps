@@ -8,6 +8,7 @@ byceps.services.site.dbmodels
 
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText
 
 from byceps.database import db
 from byceps.services.board.models import BoardID
@@ -22,12 +23,10 @@ from byceps.util.instances import ReprBuilder
 
 site_news_channels = db.Table(
     'site_news_channels',
-    db.Column(
-        'site_id', db.UnicodeText, ForeignKey('sites.id'), primary_key=True
-    ),
+    db.Column('site_id', UnicodeText, ForeignKey('sites.id'), primary_key=True),
     db.Column(
         'news_channel_id',
-        db.UnicodeText,
+        UnicodeText,
         ForeignKey('news_channels.id'),
         primary_key=True,
     ),
@@ -39,24 +38,24 @@ class DbSite(db.Model):
 
     __tablename__ = 'sites'
 
-    id: Mapped[SiteID] = mapped_column(db.UnicodeText, primary_key=True)
-    title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
-    server_name: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
+    id: Mapped[SiteID] = mapped_column(UnicodeText, primary_key=True)
+    title: Mapped[str] = mapped_column(UnicodeText, unique=True)
+    server_name: Mapped[str] = mapped_column(UnicodeText, unique=True)
     brand_id: Mapped[BrandID] = mapped_column(
-        db.UnicodeText, ForeignKey('brands.id'), index=True
+        UnicodeText, ForeignKey('brands.id'), index=True
     )
     brand: Mapped[DbBrand] = relationship(backref='sites')
     party_id: Mapped[PartyID | None] = mapped_column(
-        db.UnicodeText, ForeignKey('parties.id'), index=True
+        UnicodeText, ForeignKey('parties.id'), index=True
     )
     enabled: Mapped[bool]
     user_account_creation_enabled: Mapped[bool]
     login_enabled: Mapped[bool]
     board_id: Mapped[BoardID | None] = mapped_column(
-        db.UnicodeText, ForeignKey('boards.id'), index=True
+        UnicodeText, ForeignKey('boards.id'), index=True
     )
     storefront_id: Mapped[StorefrontID | None] = mapped_column(
-        db.UnicodeText,
+        UnicodeText,
         ForeignKey('shop_storefronts.id'),
         index=True,
     )
@@ -111,10 +110,10 @@ class DbSiteSetting(db.Model):
     __tablename__ = 'site_settings'
 
     site_id: Mapped[SiteID] = mapped_column(
-        db.UnicodeText, ForeignKey('sites.id'), primary_key=True, index=True
+        UnicodeText, ForeignKey('sites.id'), primary_key=True, index=True
     )
-    name: Mapped[str] = mapped_column(db.UnicodeText, primary_key=True)
-    value: Mapped[str] = mapped_column(db.UnicodeText)
+    name: Mapped[str] = mapped_column(UnicodeText, primary_key=True)
+    value: Mapped[str] = mapped_column(UnicodeText)
 
     def __init__(self, site_id: SiteID, name: str, value: str) -> None:
         self.site_id = site_id

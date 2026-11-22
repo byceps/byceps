@@ -14,6 +14,7 @@ from moneyed import Currency, get_currency, Money
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import Numeric, UnicodeText, Uuid
 
 
 if TYPE_CHECKING:
@@ -47,48 +48,46 @@ class DbOrder(db.Model):
 
     __tablename__ = 'shop_orders'
 
-    id: Mapped[OrderID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[OrderID] = mapped_column(Uuid, primary_key=True)
     created_at: Mapped[datetime]
     shop_id: Mapped[ShopID] = mapped_column(
-        db.UnicodeText, ForeignKey('shops.id'), index=True
+        UnicodeText, ForeignKey('shops.id'), index=True
     )
     storefront_id: Mapped[StorefrontID] = mapped_column(
-        db.UnicodeText,
+        UnicodeText,
         ForeignKey('shop_storefronts.id'),
         index=True,
     )
     storefront: Mapped[DbStorefront] = relationship()
-    order_number: Mapped[OrderNumber] = mapped_column(
-        db.UnicodeText, unique=True
-    )
+    order_number: Mapped[OrderNumber] = mapped_column(UnicodeText, unique=True)
     placed_by_id: Mapped[UserID] = mapped_column(
-        db.Uuid, ForeignKey('users.id'), index=True
+        Uuid, ForeignKey('users.id'), index=True
     )
     placed_by: Mapped[DbUser] = relationship(foreign_keys=[placed_by_id])
-    company: Mapped[str | None] = mapped_column(db.UnicodeText)
-    first_name: Mapped[str] = mapped_column(db.UnicodeText)
-    last_name: Mapped[str] = mapped_column(db.UnicodeText)
-    country: Mapped[str] = mapped_column(db.UnicodeText)
-    postal_code: Mapped[str] = mapped_column(db.UnicodeText)
-    city: Mapped[str] = mapped_column(db.UnicodeText)
-    street: Mapped[str] = mapped_column(db.UnicodeText)
-    _currency: Mapped[str] = mapped_column('currency', db.UnicodeText)
+    company: Mapped[str | None] = mapped_column(UnicodeText)
+    first_name: Mapped[str] = mapped_column(UnicodeText)
+    last_name: Mapped[str] = mapped_column(UnicodeText)
+    country: Mapped[str] = mapped_column(UnicodeText)
+    postal_code: Mapped[str] = mapped_column(UnicodeText)
+    city: Mapped[str] = mapped_column(UnicodeText)
+    street: Mapped[str] = mapped_column(UnicodeText)
+    _currency: Mapped[str] = mapped_column('currency', UnicodeText)
     _total_amount: Mapped[Decimal] = mapped_column(
-        'total_amount', db.Numeric(7, 2)
+        'total_amount', Numeric(7, 2)
     )
     invoice_created_at: Mapped[datetime | None]
-    payment_method: Mapped[str | None] = mapped_column(db.UnicodeText)
+    payment_method: Mapped[str | None] = mapped_column(UnicodeText)
     _payment_state: Mapped[str] = mapped_column(
-        'payment_state', db.UnicodeText, index=True
+        'payment_state', UnicodeText, index=True
     )
     payment_state_updated_at: Mapped[datetime | None]
     payment_state_updated_by_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, ForeignKey('users.id')
+        Uuid, ForeignKey('users.id')
     )
     payment_state_updated_by: Mapped[DbUser] = relationship(
         foreign_keys=[payment_state_updated_by_id]
     )
-    cancellation_reason: Mapped[str | None] = mapped_column(db.UnicodeText)
+    cancellation_reason: Mapped[str | None] = mapped_column(UnicodeText)
     processing_required: Mapped[bool]
     processed_at: Mapped[datetime | None]
 
@@ -164,28 +163,28 @@ class DbLineItem(db.Model):
 
     __tablename__ = 'shop_order_line_items'
 
-    id: Mapped[LineItemID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[LineItemID] = mapped_column(Uuid, primary_key=True)
     order_number: Mapped[OrderNumber] = mapped_column(
-        db.UnicodeText,
+        UnicodeText,
         ForeignKey('shop_orders.order_number'),
         index=True,
     )
     order: Mapped[DbOrder] = relationship(backref='line_items')
     product_id: Mapped[ProductID] = mapped_column(
-        db.Uuid, ForeignKey('shop_products.id'), index=True
+        Uuid, ForeignKey('shop_products.id'), index=True
     )
     product_number: Mapped[ProductNumber] = mapped_column(
-        db.UnicodeText,
+        UnicodeText,
         ForeignKey('shop_products.item_number'),
         index=True,
     )
     product: Mapped[DbProduct] = relationship(foreign_keys=[product_id])
-    _product_type: Mapped[str] = mapped_column('product_type', db.UnicodeText)
-    name: Mapped[str] = mapped_column(db.UnicodeText)
-    unit_price: Mapped[Decimal] = mapped_column(db.Numeric(6, 2))
-    tax_rate: Mapped[Decimal] = mapped_column(db.Numeric(3, 3))
+    _product_type: Mapped[str] = mapped_column('product_type', UnicodeText)
+    name: Mapped[str] = mapped_column(UnicodeText)
+    unit_price: Mapped[Decimal] = mapped_column(Numeric(6, 2))
+    tax_rate: Mapped[Decimal] = mapped_column(Numeric(3, 3))
     quantity: Mapped[int] = mapped_column(db.CheckConstraint('quantity > 0'))
-    line_amount: Mapped[Decimal] = mapped_column(db.Numeric(7, 2))
+    line_amount: Mapped[Decimal] = mapped_column(Numeric(7, 2))
     processing_required: Mapped[bool]
     processing_result: Mapped[Any | None] = mapped_column(JSONB)
     processed_at: Mapped[datetime | None]

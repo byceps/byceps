@@ -12,6 +12,7 @@ from uuid import UUID
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.shop.order.log.models import OrderLogEntryData
@@ -23,11 +24,11 @@ class DbOrderLogEntry(db.Model):
 
     __tablename__ = 'shop_order_log_entries'
 
-    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     occurred_at: Mapped[datetime]
-    event_type: Mapped[str] = mapped_column(db.UnicodeText, index=True)
+    event_type: Mapped[str] = mapped_column(UnicodeText, index=True)
     order_id: Mapped[OrderID] = mapped_column(
-        db.Uuid, ForeignKey('shop_orders.id'), index=True
+        Uuid, ForeignKey('shop_orders.id'), index=True
     )
     data: Mapped[OrderLogEntryData] = mapped_column(JSONB)
 

@@ -9,6 +9,7 @@ byceps.services.shop.catalog.dbmodels
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import Integer, UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.shop.product.models import ProductID
@@ -22,11 +23,11 @@ class DbCatalog(db.Model):
 
     __tablename__ = 'shop_catalogs'
 
-    id: Mapped[CatalogID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[CatalogID] = mapped_column(Uuid, primary_key=True)
     shop_id: Mapped[ShopID] = mapped_column(
-        db.UnicodeText, ForeignKey('shops.id'), index=True
+        UnicodeText, ForeignKey('shops.id'), index=True
     )
-    title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
+    title: Mapped[str] = mapped_column(UnicodeText, unique=True)
 
     def __init__(
         self, catalog_id: CatalogID, shop_id: ShopID, title: str
@@ -42,12 +43,12 @@ class DbCollection(db.Model):
     __tablename__ = 'shop_catalog_collections'
     __table_args__ = (db.UniqueConstraint('catalog_id', 'title'),)
 
-    id: Mapped[CollectionID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[CollectionID] = mapped_column(Uuid, primary_key=True)
     catalog_id: Mapped[CatalogID] = mapped_column(
-        db.Uuid, ForeignKey('shop_catalogs.id'), index=True
+        Uuid, ForeignKey('shop_catalogs.id'), index=True
     )
-    title: Mapped[str] = mapped_column(db.UnicodeText)
-    position: Mapped[int] = mapped_column(db.Integer)
+    title: Mapped[str] = mapped_column(UnicodeText)
+    position: Mapped[int] = mapped_column(Integer)
 
     catalog: Mapped[DbCatalog] = relationship(
         backref=backref(
@@ -71,17 +72,17 @@ class DbCatalogProduct(db.Model):
     __tablename__ = 'shop_catalog_products'
     __table_args__ = (db.UniqueConstraint('collection_id', 'product_id'),)
 
-    id: Mapped[CatalogProductID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[CatalogProductID] = mapped_column(Uuid, primary_key=True)
     collection_id: Mapped[CollectionID] = mapped_column(
-        db.Uuid,
+        Uuid,
         ForeignKey('shop_catalog_collections.id'),
         index=True,
         nullable=False,
     )
     product_id: Mapped[ProductID] = mapped_column(
-        db.Uuid, ForeignKey('shop_products.id'), index=True
+        Uuid, ForeignKey('shop_products.id'), index=True
     )
-    position: Mapped[int] = mapped_column(db.Integer)
+    position: Mapped[int] = mapped_column(Integer)
 
     collection: Mapped[DbCollection] = relationship(
         backref=backref(

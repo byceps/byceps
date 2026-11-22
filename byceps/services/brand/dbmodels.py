@@ -8,6 +8,7 @@ byceps.services.brand.dbmodels
 
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText
 
 from byceps.database import db
 from byceps.services.brand.models import BrandID
@@ -21,9 +22,9 @@ class DbBrand(db.Model):
 
     __tablename__ = 'brands'
 
-    id: Mapped[BrandID] = mapped_column(db.UnicodeText, primary_key=True)
-    title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
-    image_filename: Mapped[str | None] = mapped_column(db.UnicodeText)
+    id: Mapped[BrandID] = mapped_column(UnicodeText, primary_key=True)
+    title: Mapped[str] = mapped_column(UnicodeText, unique=True)
+    image_filename: Mapped[str | None] = mapped_column(UnicodeText)
     archived: Mapped[bool]
 
     def __init__(
@@ -47,10 +48,10 @@ class DbBrandCurrentParty(db.Model):
     __tablename__ = 'brand_current_parties'
 
     brand_id: Mapped[BrandID] = mapped_column(
-        db.UnicodeText, ForeignKey('brands.id'), primary_key=True
+        UnicodeText, ForeignKey('brands.id'), primary_key=True
     )
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText,
+        UnicodeText,
         ForeignKey('parties.id'),
         unique=True,
         nullable=False,
@@ -65,10 +66,10 @@ class DbBrandNewsletterList(db.Model):
     __tablename__ = 'brand_newsletter_lists'
 
     brand_id: Mapped[BrandID] = mapped_column(
-        db.UnicodeText, ForeignKey('brands.id'), primary_key=True
+        UnicodeText, ForeignKey('brands.id'), primary_key=True
     )
     newsletter_list_id: Mapped[NewsletterListID] = mapped_column(
-        db.UnicodeText,
+        UnicodeText,
         ForeignKey('newsletter_lists.id'),
         unique=True,
         nullable=False,
@@ -87,10 +88,10 @@ class DbBrandSetting(db.Model):
     __tablename__ = 'brand_settings'
 
     brand_id: Mapped[BrandID] = mapped_column(
-        db.UnicodeText, ForeignKey('brands.id'), primary_key=True
+        UnicodeText, ForeignKey('brands.id'), primary_key=True
     )
-    name: Mapped[str] = mapped_column(db.UnicodeText, primary_key=True)
-    value: Mapped[str] = mapped_column(db.UnicodeText)
+    name: Mapped[str] = mapped_column(UnicodeText, primary_key=True)
+    value: Mapped[str] = mapped_column(UnicodeText)
 
     def __init__(self, brand_id: BrandID, name: str, value: str) -> None:
         self.brand_id = brand_id

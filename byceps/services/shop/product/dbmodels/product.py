@@ -14,6 +14,7 @@ from moneyed import Currency, get_currency, Money
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import Numeric, UnicodeText, Uuid
 
 
 if TYPE_CHECKING:
@@ -42,21 +43,17 @@ class DbProduct(db.Model):
         db.CheckConstraint('available_from < available_until'),
     )
 
-    id: Mapped[ProductID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[ProductID] = mapped_column(Uuid, primary_key=True)
     shop_id: Mapped[ShopID] = mapped_column(
-        db.UnicodeText, ForeignKey('shops.id'), index=True
+        UnicodeText, ForeignKey('shops.id'), index=True
     )
-    item_number: Mapped[ProductNumber] = mapped_column(
-        db.UnicodeText, unique=True
-    )
-    _type: Mapped[str] = mapped_column('type', db.UnicodeText)
+    item_number: Mapped[ProductNumber] = mapped_column(UnicodeText, unique=True)
+    _type: Mapped[str] = mapped_column('type', UnicodeText)
     type_params: Mapped[ProductTypeParams | None] = mapped_column(JSONB)
-    name: Mapped[str] = mapped_column(db.UnicodeText)
-    price_amount: Mapped[Decimal] = mapped_column(db.Numeric(6, 2))
-    _price_currency: Mapped[str] = mapped_column(
-        'price_currency', db.UnicodeText
-    )
-    tax_rate: Mapped[Decimal] = mapped_column(db.Numeric(3, 3))
+    name: Mapped[str] = mapped_column(UnicodeText)
+    price_amount: Mapped[Decimal] = mapped_column(Numeric(6, 2))
+    _price_currency: Mapped[str] = mapped_column('price_currency', UnicodeText)
+    tax_rate: Mapped[Decimal] = mapped_column(Numeric(3, 3))
     available_from: Mapped[datetime | None]
     available_until: Mapped[datetime | None]
     total_quantity: Mapped[int]
@@ -139,12 +136,12 @@ class DbProductImage(db.Model):
 
     __tablename__ = 'shop_product_images'
 
-    id: Mapped[ProductImageID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[ProductImageID] = mapped_column(Uuid, primary_key=True)
     product_id: Mapped[ProductID] = mapped_column(
-        db.Uuid, ForeignKey('shop_products.id'), index=True
+        Uuid, ForeignKey('shop_products.id'), index=True
     )
-    url_preview: Mapped[str] = mapped_column(db.UnicodeText)
-    url: Mapped[str] = mapped_column(db.UnicodeText)
+    url_preview: Mapped[str] = mapped_column(UnicodeText)
+    url: Mapped[str] = mapped_column(UnicodeText)
     position: Mapped[int]
 
     def __init__(

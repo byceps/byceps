@@ -11,6 +11,7 @@ from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -27,11 +28,11 @@ class DbTimeSlot(db.Model):
         'polymorphic_identity': 'time_slot',
     }
 
-    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, ForeignKey('parties.id'), index=True
+        UnicodeText, ForeignKey('parties.id'), index=True
     )
-    type: Mapped[str] = mapped_column(db.UnicodeText, index=True)
+    type: Mapped[str] = mapped_column(UnicodeText, index=True)
     starts_at: Mapped[datetime]
     ends_at: Mapped[datetime]
 
@@ -44,7 +45,7 @@ class DbPresence(DbTimeSlot):
     }
 
     orga_id: Mapped[UserID] = mapped_column(
-        db.Uuid, ForeignKey('users.id'), nullable=True
+        Uuid, ForeignKey('users.id'), nullable=True
     )
     orga: Mapped[DbUser] = relationship()
 
@@ -70,7 +71,7 @@ class DbTask(DbTimeSlot):
         'polymorphic_identity': 'task',
     }
 
-    title: Mapped[str] = mapped_column(db.UnicodeText, nullable=True)
+    title: Mapped[str] = mapped_column(UnicodeText, nullable=True)
 
     def __init__(
         self,

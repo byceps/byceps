@@ -10,6 +10,7 @@ from typing import NamedTuple, TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 
 if TYPE_CHECKING:
@@ -36,22 +37,22 @@ class DbSeat(db.Model):
 
     __tablename__ = 'seats'
 
-    id: Mapped[SeatID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[SeatID] = mapped_column(Uuid, primary_key=True)
     area_id: Mapped[SeatingAreaID] = mapped_column(
-        db.Uuid, ForeignKey('seating_areas.id'), index=True
+        Uuid, ForeignKey('seating_areas.id'), index=True
     )
     area: Mapped[DbSeatingArea] = relationship(backref='seats')
     coord_x: Mapped[int]
     coord_y: Mapped[int]
     rotation: Mapped[int | None]
     category_id: Mapped[TicketCategoryID] = mapped_column(
-        db.Uuid,
+        Uuid,
         ForeignKey('ticket_categories.id'),
         index=True,
     )
     category: Mapped[DbTicketCategory] = relationship()
-    label: Mapped[str | None] = mapped_column(db.UnicodeText)
-    type_: Mapped[str | None] = mapped_column('type', db.UnicodeText)
+    label: Mapped[str | None] = mapped_column(UnicodeText)
+    type_: Mapped[str | None] = mapped_column('type', UnicodeText)
     blocked: Mapped[bool]
 
     def __init__(

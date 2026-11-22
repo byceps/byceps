@@ -8,6 +8,7 @@ byceps.services.seating.dbmodels.area
 
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -28,13 +29,13 @@ class DbSeatingArea(db.Model):
         db.UniqueConstraint('party_id', 'title'),
     )
 
-    id: Mapped[SeatingAreaID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[SeatingAreaID] = mapped_column(Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, ForeignKey('parties.id'), index=True
+        UnicodeText, ForeignKey('parties.id'), index=True
     )
-    slug: Mapped[str] = mapped_column(db.UnicodeText)
-    title: Mapped[str] = mapped_column(db.UnicodeText)
-    image_filename: Mapped[str | None] = mapped_column(db.UnicodeText)
+    slug: Mapped[str] = mapped_column(UnicodeText)
+    title: Mapped[str] = mapped_column(UnicodeText)
+    image_filename: Mapped[str | None] = mapped_column(UnicodeText)
     image_width: Mapped[int | None]
     image_height: Mapped[int | None]
 

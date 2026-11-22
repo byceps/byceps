@@ -10,6 +10,7 @@ from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText
 
 from byceps.database import db
 from byceps.services.brand.dbmodels import DbBrand
@@ -23,12 +24,12 @@ class DbParty(db.Model):
 
     __tablename__ = 'parties'
 
-    id: Mapped[PartyID] = mapped_column(db.UnicodeText, primary_key=True)
+    id: Mapped[PartyID] = mapped_column(UnicodeText, primary_key=True)
     brand_id: Mapped[BrandID] = mapped_column(
-        db.UnicodeText, ForeignKey('brands.id'), index=True
+        UnicodeText, ForeignKey('brands.id'), index=True
     )
     brand: Mapped[DbBrand] = relationship(backref='parties')
-    title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
+    title: Mapped[str] = mapped_column(UnicodeText, unique=True)
     starts_at: Mapped[datetime]
     ends_at: Mapped[datetime]
     max_ticket_quantity: Mapped[int | None]
@@ -75,10 +76,10 @@ class DbPartySetting(db.Model):
     __tablename__ = 'party_settings'
 
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, ForeignKey('parties.id'), primary_key=True
+        UnicodeText, ForeignKey('parties.id'), primary_key=True
     )
-    name: Mapped[str] = mapped_column(db.UnicodeText, primary_key=True)
-    value: Mapped[str] = mapped_column(db.UnicodeText)
+    name: Mapped[str] = mapped_column(UnicodeText, primary_key=True)
+    value: Mapped[str] = mapped_column(UnicodeText)
 
     def __init__(self, party_id: PartyID, name: str, value: str) -> None:
         self.party_id = party_id

@@ -8,6 +8,7 @@ byceps.services.board.dbmodels.board
 
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText
 
 from byceps.database import db
 from byceps.services.board.models import BoardID
@@ -19,9 +20,9 @@ class DbBoard(db.Model):
 
     __tablename__ = 'boards'
 
-    id: Mapped[BoardID] = mapped_column(db.UnicodeText, primary_key=True)
+    id: Mapped[BoardID] = mapped_column(UnicodeText, primary_key=True)
     brand_id: Mapped[BrandID] = mapped_column(
-        db.UnicodeText, ForeignKey('brands.id'), index=True
+        UnicodeText, ForeignKey('brands.id'), index=True
     )
     access_restricted: Mapped[bool]
 

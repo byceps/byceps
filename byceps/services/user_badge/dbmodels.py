@@ -11,6 +11,7 @@ from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.brand.models import BrandID
@@ -24,13 +25,13 @@ class DbBadge(db.Model):
 
     __tablename__ = 'user_badges'
 
-    id: Mapped[BadgeID] = mapped_column(db.Uuid, primary_key=True)
-    slug: Mapped[str] = mapped_column(db.UnicodeText, unique=True, index=True)
-    label: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
-    description: Mapped[str | None] = mapped_column(db.UnicodeText)
-    image_filename: Mapped[str] = mapped_column(db.UnicodeText)
+    id: Mapped[BadgeID] = mapped_column(Uuid, primary_key=True)
+    slug: Mapped[str] = mapped_column(UnicodeText, unique=True, index=True)
+    label: Mapped[str] = mapped_column(UnicodeText, unique=True)
+    description: Mapped[str | None] = mapped_column(UnicodeText)
+    image_filename: Mapped[str] = mapped_column(UnicodeText)
     brand_id: Mapped[BrandID | None] = mapped_column(
-        db.UnicodeText, ForeignKey('brands.id')
+        UnicodeText, ForeignKey('brands.id')
     )
     featured: Mapped[bool]
 
@@ -62,11 +63,11 @@ class DbBadgeAwarding(db.Model):
 
     __tablename__ = 'user_badge_awardings'
 
-    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     badge_id: Mapped[BadgeID] = mapped_column(
-        db.Uuid, ForeignKey('user_badges.id')
+        Uuid, ForeignKey('user_badges.id')
     )
-    awardee_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
+    awardee_id: Mapped[UserID] = mapped_column(Uuid, ForeignKey('users.id'))
     awarded_at: Mapped[datetime]
 
     def __init__(

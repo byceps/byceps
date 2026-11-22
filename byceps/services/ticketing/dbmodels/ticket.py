@@ -16,6 +16,7 @@ else:
 
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -51,45 +52,45 @@ class DbTicket(db.Model):
     __tablename__ = 'tickets'
     __table_args__ = (db.UniqueConstraint('party_id', 'code'),)
 
-    id: Mapped[TicketID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[TicketID] = mapped_column(Uuid, primary_key=True)
     created_at: Mapped[datetime]
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, ForeignKey('parties.id'), index=True
+        UnicodeText, ForeignKey('parties.id'), index=True
     )
-    code: Mapped[str] = mapped_column(db.UnicodeText, index=True)
+    code: Mapped[str] = mapped_column(UnicodeText, index=True)
     bundle_id: Mapped[TicketBundleID | None] = mapped_column(
-        db.Uuid, ForeignKey('ticket_bundles.id'), index=True
+        Uuid, ForeignKey('ticket_bundles.id'), index=True
     )
     bundle: Mapped[DbTicketBundle | None] = relationship(backref='tickets')
     category_id: Mapped[TicketCategoryID] = mapped_column(
-        db.Uuid,
+        Uuid,
         ForeignKey('ticket_categories.id'),
         index=True,
     )
     category: Mapped[DbTicketCategory] = relationship()
     owned_by_id: Mapped[UserID] = mapped_column(
-        db.Uuid, ForeignKey('users.id'), index=True
+        Uuid, ForeignKey('users.id'), index=True
     )
     owned_by: Mapped[DbUser] = relationship(foreign_keys=[owned_by_id])
     order_number: Mapped[OrderNumber | None] = mapped_column(
-        db.UnicodeText,
+        UnicodeText,
         ForeignKey('shop_orders.order_number'),
         index=True,
     )
     seat_managed_by_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, ForeignKey('users.id'), index=True
+        Uuid, ForeignKey('users.id'), index=True
     )
     seat_managed_by: Mapped[DbUser | None] = relationship(
         foreign_keys=[seat_managed_by_id]
     )
     user_managed_by_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, ForeignKey('users.id'), index=True
+        Uuid, ForeignKey('users.id'), index=True
     )
     user_managed_by: Mapped[DbUser | None] = relationship(
         foreign_keys=[user_managed_by_id]
     )
     occupied_seat_id: Mapped[SeatID | None] = mapped_column(
-        db.Uuid,
+        Uuid,
         ForeignKey('seats.id'),
         index=True,
         unique=True,
@@ -98,11 +99,11 @@ class DbTicket(db.Model):
         backref=backref('occupied_by_ticket', uselist=False)
     )
     used_by_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, ForeignKey('users.id'), index=True
+        Uuid, ForeignKey('users.id'), index=True
     )
     used_by: Mapped[DbUser | None] = relationship(foreign_keys=[used_by_id])
     _chair_source: Mapped[str | None] = mapped_column(
-        'chair_source', db.UnicodeText
+        'chair_source', UnicodeText
     )
     revoked: Mapped[bool]
     user_checked_in: Mapped[bool]

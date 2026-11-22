@@ -12,6 +12,7 @@ from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.brand.dbmodels import DbBrand
@@ -26,10 +27,10 @@ class DbGallery(db.Model):
     __tablename__ = 'galleries'
     __table_args__ = (db.UniqueConstraint('brand_id', 'slug'),)
 
-    id: Mapped[GalleryID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[GalleryID] = mapped_column(Uuid, primary_key=True)
     created_at: Mapped[datetime]
     brand_id: Mapped[BrandID] = mapped_column(
-        db.UnicodeText, ForeignKey('brands.id'), index=True
+        UnicodeText, ForeignKey('brands.id'), index=True
     )
     brand: Mapped[DbBrand] = relationship(
         backref=backref(
@@ -39,8 +40,8 @@ class DbGallery(db.Model):
         ),
     )
     position: Mapped[int]
-    slug: Mapped[str] = mapped_column(db.UnicodeText)
-    title: Mapped[str] = mapped_column(db.UnicodeText)
+    slug: Mapped[str] = mapped_column(UnicodeText)
+    title: Mapped[str] = mapped_column(UnicodeText)
     hidden: Mapped[bool]
 
     title_image = association_proxy('title_image_association', 'image')
@@ -67,10 +68,10 @@ class DbGalleryImage(db.Model):
 
     __tablename__ = 'gallery_images'
 
-    id: Mapped[GalleryImageID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[GalleryImageID] = mapped_column(Uuid, primary_key=True)
     created_at: Mapped[datetime]
     gallery_id: Mapped[GalleryID] = mapped_column(
-        db.Uuid, ForeignKey('galleries.id'), index=True, nullable=False
+        Uuid, ForeignKey('galleries.id'), index=True, nullable=False
     )
     gallery: Mapped[DbGallery] = relationship(
         backref=backref(
@@ -80,9 +81,9 @@ class DbGalleryImage(db.Model):
         ),
     )
     position: Mapped[int]
-    filename_full: Mapped[str] = mapped_column(db.UnicodeText)
-    filename_preview: Mapped[str] = mapped_column(db.UnicodeText)
-    caption: Mapped[str | None] = mapped_column(db.UnicodeText)
+    filename_full: Mapped[str] = mapped_column(UnicodeText)
+    filename_preview: Mapped[str] = mapped_column(UnicodeText)
+    caption: Mapped[str | None] = mapped_column(UnicodeText)
     hidden: Mapped[bool]
 
     def __init__(
@@ -110,13 +111,13 @@ class DbGalleryTitleImage(db.Model):
     __tablename__ = 'gallery_title_images'
 
     gallery_id: Mapped[GalleryID] = mapped_column(
-        db.Uuid, ForeignKey('galleries.id'), primary_key=True
+        Uuid, ForeignKey('galleries.id'), primary_key=True
     )
     gallery: Mapped[DbGallery] = relationship(
         backref=backref('title_image_association', uselist=False),
     )
     image_id: Mapped[GalleryImageID] = mapped_column(
-        db.Uuid, ForeignKey('gallery_images.id')
+        Uuid, ForeignKey('gallery_images.id')
     )
     image: Mapped[DbGalleryImage] = relationship()
 

@@ -12,6 +12,7 @@ from uuid import UUID
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.tourney.models import TourneyID
@@ -25,14 +26,14 @@ class DbTourneyLogEntry(db.Model):
 
     __tablename__ = 'tourney_log_entries'
 
-    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     occurred_at: Mapped[datetime]
-    event_type: Mapped[str] = mapped_column(db.UnicodeText)
+    event_type: Mapped[str] = mapped_column(UnicodeText)
     tourney_id: Mapped[TourneyID] = mapped_column(
-        db.Uuid, ForeignKey('tourneys.id'), index=True
+        Uuid, ForeignKey('tourneys.id'), index=True
     )
     initiator_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, ForeignKey('users.id')
+        Uuid, ForeignKey('users.id')
     )
     data: Mapped[LogEntryData] = mapped_column(JSONB)
 

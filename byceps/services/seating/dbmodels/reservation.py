@@ -11,6 +11,7 @@ from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -21,9 +22,9 @@ class DbSeatReservationPrecondition(db.Model):
 
     __tablename__ = 'seat_reservation_preconditions'
 
-    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, ForeignKey('parties.id'), index=True
+        UnicodeText, ForeignKey('parties.id'), index=True
     )
     at_earliest: Mapped[datetime]
     minimum_ticket_quantity: Mapped[int]

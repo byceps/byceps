@@ -11,6 +11,7 @@ from uuid import UUID
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.shop.product.dbmodels.product import DbProduct
@@ -25,12 +26,12 @@ class DbOrderAction(db.Model):
 
     __tablename__ = 'shop_order_actions'
 
-    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     product_id: Mapped[ProductID] = mapped_column(
-        db.Uuid, ForeignKey('shop_products.id'), index=True
+        Uuid, ForeignKey('shop_products.id'), index=True
     )
     product: Mapped[DbProduct] = relationship(backref='order_actions')
-    procedure: Mapped[str] = mapped_column(db.UnicodeText)
+    procedure: Mapped[str] = mapped_column(UnicodeText)
     parameters: Mapped[ActionParameters] = mapped_column(JSONB)
 
     def __init__(

@@ -12,6 +12,7 @@ from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.board.models import BoardID
@@ -26,12 +27,12 @@ class DbBoardAccessGrant(db.Model):
 
     __tablename__ = 'board_access_grants'
 
-    id: Mapped[BoardAccessGrantID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[BoardAccessGrantID] = mapped_column(Uuid, primary_key=True)
     board_id: Mapped[BoardID] = mapped_column(
-        db.UnicodeText, ForeignKey('boards.id'), index=True
+        UnicodeText, ForeignKey('boards.id'), index=True
     )
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, ForeignKey('users.id'), index=True
+        Uuid, ForeignKey('users.id'), index=True
     )
     created_at: Mapped[datetime]
 

@@ -10,6 +10,7 @@ from typing import Any, TYPE_CHECKING
 
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.types import UnicodeText, Uuid
 
 
 if TYPE_CHECKING:
@@ -28,20 +29,20 @@ class DbOutgoingWebhook(db.Model):
 
     __tablename__ = 'outgoing_webhooks'
 
-    id: Mapped[WebhookID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[WebhookID] = mapped_column(Uuid, primary_key=True)
     _event_types: Mapped[list[str]] = mapped_column(
         'event_types', MutableList.as_mutable(JSONB)
     )
     event_filters: Mapped[Any | None] = mapped_column(
         MutableDict.as_mutable(JSONB)
     )
-    _format: Mapped[str] = mapped_column('format', db.UnicodeText)
-    text_prefix: Mapped[str | None] = mapped_column(db.UnicodeText)
+    _format: Mapped[str] = mapped_column('format', UnicodeText)
+    text_prefix: Mapped[str | None] = mapped_column(UnicodeText)
     extra_fields: Mapped[Any | None] = mapped_column(
         MutableDict.as_mutable(JSONB)
     )
-    url: Mapped[str] = mapped_column(db.UnicodeText)
-    description: Mapped[str | None] = mapped_column(db.UnicodeText)
+    url: Mapped[str] = mapped_column(UnicodeText)
+    description: Mapped[str | None] = mapped_column(UnicodeText)
     enabled: Mapped[bool]
 
     def __init__(

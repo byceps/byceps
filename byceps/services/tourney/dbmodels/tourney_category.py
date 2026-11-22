@@ -9,6 +9,7 @@ byceps.services.tourney.dbmodels.tourney_category
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.party.dbmodels import DbParty
@@ -22,9 +23,9 @@ class DbTourneyCategory(db.Model):
     __tablename__ = 'tourney_categories'
     __table_args__ = (db.UniqueConstraint('party_id', 'title'),)
 
-    id: Mapped[TourneyCategoryID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[TourneyCategoryID] = mapped_column(Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, ForeignKey('parties.id'), index=True
+        UnicodeText, ForeignKey('parties.id'), index=True
     )
     party: Mapped[DbParty] = relationship(
         backref=backref(
@@ -34,7 +35,7 @@ class DbTourneyCategory(db.Model):
         ),
     )
     position: Mapped[int]
-    title: Mapped[str] = mapped_column(db.UnicodeText)
+    title: Mapped[str] = mapped_column(UnicodeText)
 
     def __init__(
         self, category_id: TourneyCategoryID, party_id: PartyID, title: str

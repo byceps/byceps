@@ -12,6 +12,7 @@ from uuid import UUID
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.user.dbmodels import DbUser
@@ -25,15 +26,15 @@ class DbUserLogEntry(db.Model):
 
     __tablename__ = 'user_log_entries'
 
-    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     occurred_at: Mapped[datetime]
-    event_type: Mapped[str] = mapped_column(db.UnicodeText, index=True)
+    event_type: Mapped[str] = mapped_column(UnicodeText, index=True)
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, ForeignKey('users.id'), index=True
+        Uuid, ForeignKey('users.id'), index=True
     )
     user: Mapped[DbUser] = relationship(foreign_keys=[user_id])
     initiator_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, ForeignKey('users.id'), index=True
+        Uuid, ForeignKey('users.id'), index=True
     )
     initiator: Mapped[DbUser] = relationship(foreign_keys=[initiator_id])
     data: Mapped[UserLogEntryData] = mapped_column(JSONB)

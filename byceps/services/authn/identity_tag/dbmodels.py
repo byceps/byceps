@@ -11,6 +11,7 @@ from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.user.models import UserID
@@ -32,12 +33,12 @@ class DbUserIdentityTag(db.Model):
 
     __tablename__ = 'authn_identity_tags'
 
-    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     created_at: Mapped[datetime]
-    creator_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
-    identifier: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
-    user_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
-    note: Mapped[str | None] = mapped_column(db.UnicodeText)
+    creator_id: Mapped[UserID] = mapped_column(Uuid, ForeignKey('users.id'))
+    identifier: Mapped[str] = mapped_column(UnicodeText, unique=True)
+    user_id: Mapped[UserID] = mapped_column(Uuid, ForeignKey('users.id'))
+    note: Mapped[str | None] = mapped_column(UnicodeText)
     suspended: Mapped[bool]
 
     def __init__(

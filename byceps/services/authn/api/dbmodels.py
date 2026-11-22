@@ -13,6 +13,7 @@ from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.authz.models import PermissionID
@@ -24,14 +25,14 @@ class DbApiToken(db.Model):
 
     __tablename__ = 'api_tokens'
 
-    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     created_at: Mapped[datetime]
-    creator_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
-    token: Mapped[str] = mapped_column(db.UnicodeText)
+    creator_id: Mapped[UserID] = mapped_column(Uuid, ForeignKey('users.id'))
+    token: Mapped[str] = mapped_column(UnicodeText)
     permissions: Mapped[list[PermissionID]] = mapped_column(
         MutableList.as_mutable(JSONB)
     )
-    description: Mapped[str | None] = mapped_column(db.UnicodeText)
+    description: Mapped[str | None] = mapped_column(UnicodeText)
     suspended: Mapped[bool]
 
     def __init__(

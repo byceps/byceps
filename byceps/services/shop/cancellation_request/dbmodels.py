@@ -13,6 +13,7 @@ from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import Numeric, UnicodeText, Uuid
 
 
 if TYPE_CHECKING:
@@ -37,28 +38,28 @@ class DbCancellationRequest(db.Model):
 
     __tablename__ = 'shop_order_cancellation_requests'
 
-    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     created_at: Mapped[datetime]
     shop_id: Mapped[ShopID] = mapped_column(
-        db.UnicodeText, ForeignKey('shops.id'), index=True
+        UnicodeText, ForeignKey('shops.id'), index=True
     )
     order_id: Mapped[OrderID] = mapped_column(
-        db.Uuid, ForeignKey('shop_orders.id'), unique=True
+        Uuid, ForeignKey('shop_orders.id'), unique=True
     )
     order_number: Mapped[OrderNumber] = mapped_column(
-        db.UnicodeText,
+        UnicodeText,
         ForeignKey('shop_orders.order_number'),
         unique=True,
         nullable=False,
     )
     _donation_extent: Mapped[str] = mapped_column(
-        'donation_extent', db.UnicodeText, index=True
+        'donation_extent', UnicodeText, index=True
     )
-    amount_refund: Mapped[Decimal] = mapped_column(db.Numeric(7, 2))
-    amount_donation: Mapped[Decimal] = mapped_column(db.Numeric(7, 2))
-    recipient_name: Mapped[str | None] = mapped_column(db.UnicodeText)
-    recipient_iban: Mapped[str | None] = mapped_column(db.UnicodeText)
-    _state: Mapped[str] = mapped_column('state', db.UnicodeText, index=True)
+    amount_refund: Mapped[Decimal] = mapped_column(Numeric(7, 2))
+    amount_donation: Mapped[Decimal] = mapped_column(Numeric(7, 2))
+    recipient_name: Mapped[str | None] = mapped_column(UnicodeText)
+    recipient_iban: Mapped[str | None] = mapped_column(UnicodeText)
+    _state: Mapped[str] = mapped_column('state', UnicodeText, index=True)
 
     def __init__(
         self,

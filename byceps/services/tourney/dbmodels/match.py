@@ -7,6 +7,7 @@ byceps.services.tourney.dbmodels.match
 """
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.types import Uuid
 
 from byceps.database import db
 from byceps.services.tourney.models import MatchID
@@ -17,7 +18,7 @@ class DbMatch(db.Model):
 
     __tablename__ = 'tourney_matches'
 
-    id: Mapped[MatchID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[MatchID] = mapped_column(Uuid, primary_key=True)
 
     def __init__(self, match_id: MatchID) -> None:
         self.id = match_id

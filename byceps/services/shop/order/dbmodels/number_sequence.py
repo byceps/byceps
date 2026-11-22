@@ -8,6 +8,7 @@ byceps.services.shop.order.dbmodels.number_sequence
 
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.shop.order.models.number import OrderNumberSequenceID
@@ -20,11 +21,11 @@ class DbOrderNumberSequence(db.Model):
 
     __tablename__ = 'shop_order_number_sequences'
 
-    id: Mapped[OrderNumberSequenceID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[OrderNumberSequenceID] = mapped_column(Uuid, primary_key=True)
     shop_id: Mapped[ShopID] = mapped_column(
-        db.UnicodeText, ForeignKey('shops.id'), index=True
+        UnicodeText, ForeignKey('shops.id'), index=True
     )
-    prefix: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
+    prefix: Mapped[str] = mapped_column(UnicodeText, unique=True)
     value: Mapped[int]
     archived: Mapped[bool]
 

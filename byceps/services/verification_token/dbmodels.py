@@ -12,6 +12,7 @@ from typing import Any, TYPE_CHECKING
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 
 if TYPE_CHECKING:
@@ -32,12 +33,12 @@ class DbVerificationToken(db.Model):
 
     __tablename__ = 'verification_tokens'
 
-    token: Mapped[str] = mapped_column(db.UnicodeText, primary_key=True)
+    token: Mapped[str] = mapped_column(UnicodeText, primary_key=True)
     created_at: Mapped[datetime]
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, ForeignKey('users.id'), index=True
+        Uuid, ForeignKey('users.id'), index=True
     )
-    _purpose: Mapped[str] = mapped_column('purpose', db.UnicodeText, index=True)
+    _purpose: Mapped[str] = mapped_column('purpose', UnicodeText, index=True)
     data: Mapped[Any | None] = mapped_column(JSONB)
 
     def __init__(

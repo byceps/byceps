@@ -10,6 +10,7 @@ from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -22,9 +23,9 @@ class DbTimetable(db.Model):
 
     __tablename__ = 'timetables'
 
-    id: Mapped[TimetableID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[TimetableID] = mapped_column(Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, ForeignKey('parties.id'), unique=True
+        UnicodeText, ForeignKey('parties.id'), unique=True
     )
     hidden: Mapped[bool]
 
@@ -44,15 +45,15 @@ class DbTimetableItem(db.Model):
 
     __tablename__ = 'timetable_items'
 
-    id: Mapped[TimetableItemID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[TimetableItemID] = mapped_column(Uuid, primary_key=True)
     timetable_id: Mapped[TimetableID] = mapped_column(
-        db.Uuid, ForeignKey('timetables.id'), index=True
+        Uuid, ForeignKey('timetables.id'), index=True
     )
     scheduled_at: Mapped[datetime]
-    description: Mapped[str] = mapped_column(db.UnicodeText)
-    location: Mapped[str | None] = mapped_column(db.UnicodeText)
-    link_target: Mapped[str | None] = mapped_column(db.UnicodeText)
-    link_label: Mapped[str | None] = mapped_column(db.UnicodeText)
+    description: Mapped[str] = mapped_column(UnicodeText)
+    location: Mapped[str | None] = mapped_column(UnicodeText)
+    link_target: Mapped[str | None] = mapped_column(UnicodeText)
+    link_label: Mapped[str | None] = mapped_column(UnicodeText)
     hidden: Mapped[bool]
 
     def __init__(

@@ -15,6 +15,7 @@ from datetime import datetime
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.language.dbmodels import DbLanguage
@@ -39,12 +40,12 @@ class DbSnippet(db.Model):
         ),
     )
 
-    id: Mapped[SnippetID] = mapped_column(db.Uuid, primary_key=True)
-    scope_type: Mapped[str] = mapped_column(db.UnicodeText)
-    scope_name: Mapped[str] = mapped_column(db.UnicodeText)
-    name: Mapped[str] = mapped_column(db.UnicodeText, index=True)
+    id: Mapped[SnippetID] = mapped_column(Uuid, primary_key=True)
+    scope_type: Mapped[str] = mapped_column(UnicodeText)
+    scope_name: Mapped[str] = mapped_column(UnicodeText)
+    name: Mapped[str] = mapped_column(UnicodeText, index=True)
     language_code: Mapped[str] = mapped_column(
-        db.UnicodeText,
+        UnicodeText,
         ForeignKey('languages.code'),
         index=True,
     )
@@ -76,15 +77,15 @@ class DbSnippetVersion(db.Model):
 
     __tablename__ = 'snippet_versions'
 
-    id: Mapped[SnippetVersionID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[SnippetVersionID] = mapped_column(Uuid, primary_key=True)
     snippet_id: Mapped[SnippetID] = mapped_column(
-        db.Uuid, ForeignKey('snippets.id'), index=True
+        Uuid, ForeignKey('snippets.id'), index=True
     )
     snippet: Mapped[DbSnippet] = relationship()
     created_at: Mapped[datetime]
-    creator_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
+    creator_id: Mapped[UserID] = mapped_column(Uuid, ForeignKey('users.id'))
     creator: Mapped[DbUser] = relationship()
-    body: Mapped[str] = mapped_column(db.UnicodeText)
+    body: Mapped[str] = mapped_column(UnicodeText)
 
     def __init__(
         self,
@@ -112,13 +113,13 @@ class DbCurrentSnippetVersionAssociation(db.Model):
     __tablename__ = 'snippet_current_versions'
 
     snippet_id: Mapped[SnippetID] = mapped_column(
-        db.Uuid, ForeignKey('snippets.id'), primary_key=True
+        Uuid, ForeignKey('snippets.id'), primary_key=True
     )
     snippet: Mapped[DbSnippet] = relationship(
         backref=backref('current_version_association', uselist=False),
     )
     version_id: Mapped[SnippetVersionID] = mapped_column(
-        db.Uuid,
+        Uuid,
         ForeignKey('snippet_versions.id'),
         unique=True,
     )

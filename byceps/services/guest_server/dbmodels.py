@@ -13,6 +13,7 @@ from typing import TYPE_CHECKING
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import DateTime, UnicodeText, Uuid
 
 
 if TYPE_CHECKING:
@@ -33,7 +34,7 @@ class DbGuestServerSetting(db.Model):
     __tablename__ = 'guest_server_settings'
 
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, ForeignKey('parties.id'), primary_key=True
+        UnicodeText, ForeignKey('parties.id'), primary_key=True
     )
     _netmask: Mapped[str | None] = mapped_column('netmask', postgresql.INET)
     _gateway: Mapped[str | None] = mapped_column('gateway', postgresql.INET)
@@ -43,7 +44,7 @@ class DbGuestServerSetting(db.Model):
     _dns_server2: Mapped[str | None] = mapped_column(
         'dns_server2', postgresql.INET
     )
-    domain: Mapped[str | None] = mapped_column(db.UnicodeText)
+    domain: Mapped[str | None] = mapped_column(UnicodeText)
 
     def __init__(self, party_id: PartyID) -> None:
         self.party_id = party_id
@@ -98,16 +99,16 @@ class DbGuestServer(db.Model):
 
     __tablename__ = 'guest_servers'
 
-    id: Mapped[ServerID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[ServerID] = mapped_column(Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, ForeignKey('parties.id'), index=True
+        UnicodeText, ForeignKey('parties.id'), index=True
     )
     created_at: Mapped[datetime]
-    creator_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
-    owner_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
-    description: Mapped[str | None] = mapped_column(db.UnicodeText)
-    notes_owner: Mapped[str | None] = mapped_column(db.UnicodeText)
-    notes_admin: Mapped[str | None] = mapped_column(db.UnicodeText)
+    creator_id: Mapped[UserID] = mapped_column(Uuid, ForeignKey('users.id'))
+    owner_id: Mapped[UserID] = mapped_column(Uuid, ForeignKey('users.id'))
+    description: Mapped[str | None] = mapped_column(UnicodeText)
+    notes_owner: Mapped[str | None] = mapped_column(UnicodeText)
+    notes_admin: Mapped[str | None] = mapped_column(UnicodeText)
     approved: Mapped[bool]
     checked_in_at: Mapped[datetime | None]
     checked_out_at: Mapped[datetime | None]
@@ -142,16 +143,16 @@ class DbGuestServerAddress(db.Model):
 
     __tablename__ = 'guest_server_addresses'
 
-    id: Mapped[AddressID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[AddressID] = mapped_column(Uuid, primary_key=True)
     server_id: Mapped[ServerID] = mapped_column(
-        db.Uuid, ForeignKey('guest_servers.id'), index=True
+        Uuid, ForeignKey('guest_servers.id'), index=True
     )
     server: Mapped[DbGuestServer] = relationship(backref='addresses')
-    created_at: Mapped[datetime] = mapped_column(db.DateTime)
+    created_at: Mapped[datetime] = mapped_column(DateTime)
     _ip_address: Mapped[str | None] = mapped_column(
         'ip_address', postgresql.INET
     )
-    hostname: Mapped[str | None] = mapped_column(db.UnicodeText)
+    hostname: Mapped[str | None] = mapped_column(UnicodeText)
     _netmask: Mapped[str | None] = mapped_column('netmask', postgresql.INET)
     _gateway: Mapped[str | None] = mapped_column('gateway', postgresql.INET)
 

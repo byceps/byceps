@@ -10,6 +10,7 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 
 if TYPE_CHECKING:
@@ -32,20 +33,20 @@ class DbNavMenu(db.Model):
     __tablename__ = 'site_nav_menus'
     __table_args__ = (db.UniqueConstraint('site_id', 'name', 'language_code'),)
 
-    id: Mapped[NavMenuID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[NavMenuID] = mapped_column(Uuid, primary_key=True)
     site_id: Mapped[SiteID] = mapped_column(
-        db.UnicodeText, ForeignKey('sites.id'), index=True
+        UnicodeText, ForeignKey('sites.id'), index=True
     )
-    name: Mapped[str] = mapped_column(db.UnicodeText, index=True)
+    name: Mapped[str] = mapped_column(UnicodeText, index=True)
     language_code: Mapped[str] = mapped_column(
-        db.UnicodeText,
+        UnicodeText,
         ForeignKey('languages.code'),
         index=True,
     )
     language: Mapped[DbLanguage] = relationship()
     hidden: Mapped[bool]
     parent_menu_id: Mapped[NavMenuID | None] = mapped_column(
-        db.Uuid, ForeignKey('site_nav_menus.id')
+        Uuid, ForeignKey('site_nav_menus.id')
     )
 
     def __init__(
@@ -72,9 +73,9 @@ class DbNavItem(db.Model):
     __tablename__ = 'site_nav_menu_items'
     __table_args__ = (db.UniqueConstraint('menu_id', 'position'),)
 
-    id: Mapped[NavItemID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[NavItemID] = mapped_column(Uuid, primary_key=True)
     menu_id: Mapped[NavMenuID] = mapped_column(
-        db.Uuid, ForeignKey('site_nav_menus.id'), index=True
+        Uuid, ForeignKey('site_nav_menus.id'), index=True
     )
     menu: Mapped[DbNavMenu] = relationship(
         backref=backref(
@@ -84,10 +85,10 @@ class DbNavItem(db.Model):
         ),
     )
     position: Mapped[int]
-    _target_type: Mapped[str] = mapped_column('target_type', db.UnicodeText)
-    target: Mapped[str] = mapped_column(db.UnicodeText)
-    label: Mapped[str] = mapped_column(db.UnicodeText)
-    current_page_id: Mapped[str] = mapped_column(db.UnicodeText)
+    _target_type: Mapped[str] = mapped_column('target_type', UnicodeText)
+    target: Mapped[str] = mapped_column(UnicodeText)
+    label: Mapped[str] = mapped_column(UnicodeText)
+    current_page_id: Mapped[str] = mapped_column(UnicodeText)
     hidden: Mapped[bool]
 
     def __init__(

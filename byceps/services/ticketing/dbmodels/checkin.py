@@ -11,6 +11,7 @@ from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import Uuid
 
 from byceps.database import db
 from byceps.services.ticketing.models.ticket import TicketID
@@ -22,14 +23,12 @@ class DbTicketCheckIn(db.Model):
 
     __tablename__ = 'ticket_checkins'
 
-    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     occurred_at: Mapped[datetime]
     ticket_id: Mapped[TicketID] = mapped_column(
-        db.Uuid, ForeignKey('tickets.id'), index=True
+        Uuid, ForeignKey('tickets.id'), index=True
     )
-    initiator_id: Mapped[UserID] = mapped_column(
-        db.Uuid, ForeignKey('users.id')
-    )
+    initiator_id: Mapped[UserID] = mapped_column(Uuid, ForeignKey('users.id'))
 
     def __init__(
         self,

@@ -14,6 +14,7 @@ from datetime import datetime
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.language.dbmodels import DbLanguage
@@ -38,21 +39,21 @@ class DbPage(db.Model):
         db.UniqueConstraint('site_id', 'language_code', 'url_path'),
     )
 
-    id: Mapped[PageID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[PageID] = mapped_column(Uuid, primary_key=True)
     site_id: Mapped[SiteID] = mapped_column(
-        db.UnicodeText, ForeignKey('sites.id'), index=True
+        UnicodeText, ForeignKey('sites.id'), index=True
     )
-    name: Mapped[str] = mapped_column(db.UnicodeText, index=True)
+    name: Mapped[str] = mapped_column(UnicodeText, index=True)
     language_code: Mapped[str] = mapped_column(
-        db.UnicodeText,
+        UnicodeText,
         ForeignKey('languages.code'),
         index=True,
     )
     language: Mapped[DbLanguage] = relationship()
-    url_path: Mapped[str] = mapped_column(db.UnicodeText, index=True)
+    url_path: Mapped[str] = mapped_column(UnicodeText, index=True)
     hidden: Mapped[bool]
     nav_menu_id: Mapped[NavMenuID | None] = mapped_column(
-        db.Uuid, ForeignKey('site_nav_menus.id')
+        Uuid, ForeignKey('site_nav_menus.id')
     )
     nav_menu: Mapped[DbNavMenu] = relationship()
 
@@ -82,17 +83,17 @@ class DbPageVersion(db.Model):
 
     __tablename__ = 'page_versions'
 
-    id: Mapped[PageVersionID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[PageVersionID] = mapped_column(Uuid, primary_key=True)
     page_id: Mapped[PageID] = mapped_column(
-        db.Uuid, ForeignKey('pages.id'), index=True
+        Uuid, ForeignKey('pages.id'), index=True
     )
     page: Mapped[DbPage] = relationship()
     created_at: Mapped[datetime]
-    creator_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
+    creator_id: Mapped[UserID] = mapped_column(Uuid, ForeignKey('users.id'))
     creator: Mapped[DbUser] = relationship()
-    title: Mapped[str] = mapped_column(db.UnicodeText)
-    head: Mapped[str | None] = mapped_column(db.UnicodeText)
-    body: Mapped[str] = mapped_column(db.UnicodeText)
+    title: Mapped[str] = mapped_column(UnicodeText)
+    head: Mapped[str | None] = mapped_column(UnicodeText)
+    body: Mapped[str] = mapped_column(UnicodeText)
 
     def __init__(
         self,
@@ -124,13 +125,13 @@ class DbCurrentPageVersionAssociation(db.Model):
     __tablename__ = 'page_current_versions'
 
     page_id: Mapped[PageID] = mapped_column(
-        db.Uuid, ForeignKey('pages.id'), primary_key=True
+        Uuid, ForeignKey('pages.id'), primary_key=True
     )
     page: Mapped[DbPage] = relationship(
         backref=backref('current_version_association', uselist=False)
     )
     version_id: Mapped[PageVersionID] = mapped_column(
-        db.Uuid, ForeignKey('page_versions.id'), unique=True
+        Uuid, ForeignKey('page_versions.id'), unique=True
     )
     version: Mapped[DbPageVersion] = relationship()
 

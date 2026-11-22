@@ -12,6 +12,7 @@ from moneyed import Currency, get_currency
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText
 
 
 if TYPE_CHECKING:
@@ -31,15 +32,15 @@ class DbShop(db.Model):
 
     __tablename__ = 'shops'
 
-    id: Mapped[ShopID] = mapped_column(db.UnicodeText, primary_key=True)
+    id: Mapped[ShopID] = mapped_column(UnicodeText, primary_key=True)
     brand_id: Mapped[BrandID] = mapped_column(
-        db.UnicodeText,
+        UnicodeText,
         ForeignKey('brands.id'),
         unique=True,
         index=True,
     )
-    title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
-    _currency: Mapped[str] = mapped_column('currency', db.UnicodeText)
+    title: Mapped[str] = mapped_column(UnicodeText, unique=True)
+    _currency: Mapped[str] = mapped_column('currency', UnicodeText)
     archived: Mapped[bool]
     extra_settings: Mapped[Any | None] = mapped_column(
         MutableDict.as_mutable(JSONB)

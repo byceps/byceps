@@ -15,6 +15,7 @@ from moneyed import Currency, get_currency, Money
 from sqlalchemy.dialects.postgresql import JSONB
 from sqlalchemy.orm import Mapped, mapped_column
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import DateTime, Numeric, UnicodeText, Uuid
 
 
 if TYPE_CHECKING:
@@ -32,14 +33,14 @@ class DbPayment(db.Model):
 
     __tablename__ = 'shop_payments'
 
-    id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[UUID] = mapped_column(Uuid, primary_key=True)
     order_id: Mapped[OrderID] = mapped_column(
-        db.Uuid, ForeignKey('shop_orders.id'), index=True
+        Uuid, ForeignKey('shop_orders.id'), index=True
     )
-    created_at: Mapped[datetime] = mapped_column(db.DateTime)
-    method: Mapped[str] = mapped_column(db.UnicodeText)
-    amount: Mapped[Decimal] = mapped_column(db.Numeric(7, 2))
-    _currency: Mapped[str] = mapped_column('currency', db.UnicodeText)
+    created_at: Mapped[datetime] = mapped_column(DateTime)
+    method: Mapped[str] = mapped_column(UnicodeText)
+    amount: Mapped[Decimal] = mapped_column(Numeric(7, 2))
+    _currency: Mapped[str] = mapped_column('currency', UnicodeText)
     additional_data: Mapped[AdditionalPaymentData] = mapped_column(JSONB)
 
     def __init__(

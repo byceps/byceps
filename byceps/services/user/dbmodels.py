@@ -21,6 +21,7 @@ else:
     from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
 from sqlalchemy.schema import ForeignKey
+from sqlalchemy.types import UnicodeText, Uuid
 
 from byceps.database import db
 from byceps.services.user.models import (
@@ -41,9 +42,9 @@ class DbUserAvatar(db.Model):
 
     __tablename__ = 'user_avatars'
 
-    id: Mapped[UserAvatarID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[UserAvatarID] = mapped_column(Uuid, primary_key=True)
     created_at: Mapped[datetime]
-    _image_type: Mapped[str] = mapped_column('image_type', db.UnicodeText)
+    _image_type: Mapped[str] = mapped_column('image_type', UnicodeText)
 
     def __init__(
         self,
@@ -83,22 +84,20 @@ class DbUser(db.Model):
 
     __tablename__ = 'users'
 
-    id: Mapped[UserID] = mapped_column(db.Uuid, primary_key=True)
+    id: Mapped[UserID] = mapped_column(Uuid, primary_key=True)
     created_at: Mapped[datetime]
-    screen_name: Mapped[str | None] = mapped_column(db.UnicodeText, unique=True)
-    email_address: Mapped[str | None] = mapped_column(
-        db.UnicodeText, unique=True
-    )
+    screen_name: Mapped[str | None] = mapped_column(UnicodeText, unique=True)
+    email_address: Mapped[str | None] = mapped_column(UnicodeText, unique=True)
     email_address_verified: Mapped[bool]
     avatar_id: Mapped[UserAvatarID | None] = mapped_column(
-        db.Uuid, ForeignKey('user_avatars.id')
+        Uuid, ForeignKey('user_avatars.id')
     )
     avatar: Mapped[DbUserAvatar] = relationship(foreign_keys=[avatar_id])
     initialized: Mapped[bool]
     suspended: Mapped[bool]
     deleted: Mapped[bool]
-    locale: Mapped[str | None] = mapped_column(db.UnicodeText)
-    legacy_id: Mapped[str | None] = mapped_column(db.UnicodeText)
+    locale: Mapped[str | None] = mapped_column(UnicodeText)
+    legacy_id: Mapped[str | None] = mapped_column(UnicodeText)
 
     def __init__(
         self,
@@ -160,20 +159,20 @@ class DbUserDetail(db.Model):
     __tablename__ = 'user_details'
 
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, ForeignKey('users.id'), primary_key=True
+        Uuid, ForeignKey('users.id'), primary_key=True
     )
     user: Mapped[DbUser] = relationship(
         backref=backref('detail', uselist=False)
     )
-    first_name: Mapped[str | None] = mapped_column(db.UnicodeText)
-    last_name: Mapped[str | None] = mapped_column(db.UnicodeText)
+    first_name: Mapped[str | None] = mapped_column(UnicodeText)
+    last_name: Mapped[str | None] = mapped_column(UnicodeText)
     date_of_birth: Mapped[date | None]
-    country: Mapped[str | None] = mapped_column(db.UnicodeText)
-    postal_code: Mapped[str | None] = mapped_column(db.UnicodeText)
-    city: Mapped[str | None] = mapped_column(db.UnicodeText)
-    street: Mapped[str | None] = mapped_column(db.UnicodeText)
-    phone_number: Mapped[str | None] = mapped_column(db.UnicodeText)
-    internal_comment: Mapped[str | None] = mapped_column(db.UnicodeText)
+    country: Mapped[str | None] = mapped_column(UnicodeText)
+    postal_code: Mapped[str | None] = mapped_column(UnicodeText)
+    city: Mapped[str | None] = mapped_column(UnicodeText)
+    street: Mapped[str | None] = mapped_column(UnicodeText)
+    phone_number: Mapped[str | None] = mapped_column(UnicodeText)
+    internal_comment: Mapped[str | None] = mapped_column(UnicodeText)
     extras: Mapped[dict[str, Any] | None] = mapped_column(
         MutableDict.as_mutable(JSONB)
     )
