@@ -7,7 +7,7 @@ byceps.services.site.dbmodels
 """
 
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
-from sqlalchemy.schema import ForeignKey
+from sqlalchemy.schema import Column, ForeignKey, Table
 from sqlalchemy.types import UnicodeText
 
 from byceps.database import db
@@ -21,10 +21,11 @@ from byceps.services.site.models import SiteID
 from byceps.util.instances import ReprBuilder
 
 
-site_news_channels = db.Table(
+site_news_channels = Table(
     'site_news_channels',
-    db.Column('site_id', UnicodeText, ForeignKey('sites.id'), primary_key=True),
-    db.Column(
+    db.metadata,
+    Column('site_id', UnicodeText, ForeignKey('sites.id'), primary_key=True),
+    Column(
         'news_channel_id',
         UnicodeText,
         ForeignKey('news_channels.id'),
