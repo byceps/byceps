@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING
 
 from moneyed import Currency, get_currency, Money
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 
 if TYPE_CHECKING:
@@ -42,7 +43,7 @@ class DbProduct(db.Model):
 
     id: Mapped[ProductID] = mapped_column(db.Uuid, primary_key=True)
     shop_id: Mapped[ShopID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('shops.id'), index=True
+        db.UnicodeText, ForeignKey('shops.id'), index=True
     )
     item_number: Mapped[ProductNumber] = mapped_column(
         db.UnicodeText, unique=True
@@ -139,7 +140,7 @@ class DbProductImage(db.Model):
 
     id: Mapped[ProductImageID] = mapped_column(db.Uuid, primary_key=True)
     product_id: Mapped[ProductID] = mapped_column(
-        db.Uuid, db.ForeignKey('shop_products.id'), index=True
+        db.Uuid, ForeignKey('shop_products.id'), index=True
     )
     url_preview: Mapped[str] = mapped_column(db.UnicodeText)
     url: Mapped[str] = mapped_column(db.UnicodeText)

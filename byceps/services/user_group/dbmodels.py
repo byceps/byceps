@@ -11,6 +11,7 @@ from uuid import UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -26,11 +27,11 @@ class DbUserGroup(db.Model):
 
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True
+        db.UnicodeText, ForeignKey('parties.id'), index=True
     )
     created_at: Mapped[datetime]
     creator_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), unique=True
+        db.Uuid, ForeignKey('users.id'), unique=True
     )
     creator: Mapped[DbUser] = relationship()
     title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
@@ -66,12 +67,12 @@ class DbUserGroupMembership(db.Model):
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime]
     group_id: Mapped[UUID] = mapped_column(
-        db.Uuid, db.ForeignKey('user_groups.id')
+        db.Uuid, ForeignKey('user_groups.id')
     )
     group: Mapped[DbUserGroup] = relationship(
         collection_class=set, backref='memberships'
     )
-    user_id: Mapped[UserID] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
+    user_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
     user: Mapped[DbUser] = relationship(backref='group_membership')
 
     def __init__(

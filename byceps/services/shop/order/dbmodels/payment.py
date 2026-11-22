@@ -13,6 +13,7 @@ from uuid import UUID
 
 from moneyed import Currency, get_currency, Money
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 
 if TYPE_CHECKING:
@@ -32,7 +33,7 @@ class DbPayment(db.Model):
 
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     order_id: Mapped[OrderID] = mapped_column(
-        db.Uuid, db.ForeignKey('shop_orders.id'), index=True
+        db.Uuid, ForeignKey('shop_orders.id'), index=True
     )
     created_at: Mapped[datetime] = mapped_column(db.DateTime)
     method: Mapped[str] = mapped_column(db.UnicodeText)

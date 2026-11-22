@@ -9,6 +9,7 @@ byceps.services.ticketing.dbmodels.archived_attendance
 from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -34,10 +35,10 @@ class DbArchivedAttendance(db.Model):
     __tablename__ = 'user_archived_party_attendances'
 
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+        db.Uuid, ForeignKey('users.id'), primary_key=True
     )
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('parties.id'), primary_key=True
+        db.UnicodeText, ForeignKey('parties.id'), primary_key=True
     )
     created_at: Mapped[datetime]
 

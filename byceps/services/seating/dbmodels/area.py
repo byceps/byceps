@@ -7,6 +7,7 @@ byceps.services.seating.dbmodels.area
 """
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -29,7 +30,7 @@ class DbSeatingArea(db.Model):
 
     id: Mapped[SeatingAreaID] = mapped_column(db.Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True
+        db.UnicodeText, ForeignKey('parties.id'), index=True
     )
     slug: Mapped[str] = mapped_column(db.UnicodeText)
     title: Mapped[str] = mapped_column(db.UnicodeText)

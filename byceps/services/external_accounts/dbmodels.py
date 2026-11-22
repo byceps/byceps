@@ -10,6 +10,7 @@ from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.user.models import UserID
@@ -28,7 +29,7 @@ class DbConnectedExternalAccount(db.Model):
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime] = mapped_column(db.DateTime)
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), index=True
+        db.Uuid, ForeignKey('users.id'), index=True
     )
     service: Mapped[str] = mapped_column(db.UnicodeText)
     external_id: Mapped[str | None] = mapped_column(db.UnicodeText)

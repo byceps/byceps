@@ -9,6 +9,7 @@ byceps.services.ticketing.dbmodels.ticket_bundle
 from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -34,31 +35,31 @@ class DbTicketBundle(db.Model):
     id: Mapped[TicketBundleID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime]
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True
+        db.UnicodeText, ForeignKey('parties.id'), index=True
     )
     ticket_category_id: Mapped[TicketCategoryID] = mapped_column(
         db.Uuid,
-        db.ForeignKey('ticket_categories.id'),
+        ForeignKey('ticket_categories.id'),
         index=True,
     )
     ticket_category: Mapped[DbTicketCategory] = relationship()
     ticket_quantity: Mapped[int]
     owned_by_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), index=True
+        db.Uuid, ForeignKey('users.id'), index=True
     )
     owned_by: Mapped[DbUser] = relationship(foreign_keys=[owned_by_id])
     order_number: Mapped[OrderNumber | None] = mapped_column(
         db.UnicodeText,
-        db.ForeignKey('shop_orders.order_number'),
+        ForeignKey('shop_orders.order_number'),
     )
     seats_managed_by_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), index=True
+        db.Uuid, ForeignKey('users.id'), index=True
     )
     seats_managed_by: Mapped[DbUser] = relationship(
         foreign_keys=[seats_managed_by_id]
     )
     users_managed_by_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), index=True
+        db.Uuid, ForeignKey('users.id'), index=True
     )
     users_managed_by: Mapped[DbUser] = relationship(
         foreign_keys=[users_managed_by_id]

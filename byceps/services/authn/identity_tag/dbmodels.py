@@ -10,6 +10,7 @@ from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.user.models import UserID
@@ -33,11 +34,9 @@ class DbUserIdentityTag(db.Model):
 
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime]
-    creator_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
-    )
+    creator_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
     identifier: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
-    user_id: Mapped[UserID] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
+    user_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
     note: Mapped[str | None] = mapped_column(db.UnicodeText)
     suspended: Mapped[bool]
 

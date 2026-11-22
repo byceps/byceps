@@ -9,6 +9,7 @@ byceps.services.shop.order.dbmodels.order_action
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.shop.product.dbmodels.product import DbProduct
@@ -25,7 +26,7 @@ class DbOrderAction(db.Model):
 
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     product_id: Mapped[ProductID] = mapped_column(
-        db.Uuid, db.ForeignKey('shop_products.id'), index=True
+        db.Uuid, ForeignKey('shop_products.id'), index=True
     )
     product: Mapped[DbProduct] = relationship(backref='order_actions')
     procedure: Mapped[str] = mapped_column(db.UnicodeText)

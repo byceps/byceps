@@ -12,6 +12,7 @@ from typing import Any, TYPE_CHECKING
 
 from moneyed import Currency, get_currency, Money
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 
 if TYPE_CHECKING:
@@ -48,11 +49,11 @@ class DbOrder(db.Model):
     id: Mapped[OrderID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime]
     shop_id: Mapped[ShopID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('shops.id'), index=True
+        db.UnicodeText, ForeignKey('shops.id'), index=True
     )
     storefront_id: Mapped[StorefrontID] = mapped_column(
         db.UnicodeText,
-        db.ForeignKey('shop_storefronts.id'),
+        ForeignKey('shop_storefronts.id'),
         index=True,
     )
     storefront: Mapped[DbStorefront] = relationship()
@@ -60,7 +61,7 @@ class DbOrder(db.Model):
         db.UnicodeText, unique=True
     )
     placed_by_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), index=True
+        db.Uuid, ForeignKey('users.id'), index=True
     )
     placed_by: Mapped[DbUser] = relationship(foreign_keys=[placed_by_id])
     company: Mapped[str | None] = mapped_column(db.UnicodeText)
@@ -81,7 +82,7 @@ class DbOrder(db.Model):
     )
     payment_state_updated_at: Mapped[datetime | None]
     payment_state_updated_by_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
+        db.Uuid, ForeignKey('users.id')
     )
     payment_state_updated_by: Mapped[DbUser] = relationship(
         foreign_keys=[payment_state_updated_by_id]
@@ -165,16 +166,16 @@ class DbLineItem(db.Model):
     id: Mapped[LineItemID] = mapped_column(db.Uuid, primary_key=True)
     order_number: Mapped[OrderNumber] = mapped_column(
         db.UnicodeText,
-        db.ForeignKey('shop_orders.order_number'),
+        ForeignKey('shop_orders.order_number'),
         index=True,
     )
     order: Mapped[DbOrder] = relationship(backref='line_items')
     product_id: Mapped[ProductID] = mapped_column(
-        db.Uuid, db.ForeignKey('shop_products.id'), index=True
+        db.Uuid, ForeignKey('shop_products.id'), index=True
     )
     product_number: Mapped[ProductNumber] = mapped_column(
         db.UnicodeText,
-        db.ForeignKey('shop_products.item_number'),
+        ForeignKey('shop_products.item_number'),
         index=True,
     )
     product: Mapped[DbProduct] = relationship(foreign_keys=[product_id])

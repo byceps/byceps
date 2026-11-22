@@ -9,6 +9,7 @@ byceps.services.tourney.dbmodels.match_comment
 from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.tourney.models import MatchCommentID, MatchID
@@ -25,18 +26,18 @@ class DbMatchComment(db.Model):
 
     id: Mapped[MatchCommentID] = mapped_column(db.Uuid, primary_key=True)
     match_id: Mapped[MatchID] = mapped_column(
-        db.Uuid, db.ForeignKey('tourney_matches.id'), index=True
+        db.Uuid, ForeignKey('tourney_matches.id'), index=True
     )
     match: Mapped[DbMatch] = relationship()
     created_at: Mapped[datetime]
     created_by_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
+        db.Uuid, ForeignKey('users.id')
     )
     created_by: Mapped[DbUser] = relationship(foreign_keys=[created_by_id])
     body: Mapped[str] = mapped_column(db.UnicodeText)
     last_edited_at: Mapped[datetime | None]
     last_edited_by_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
+        db.Uuid, ForeignKey('users.id')
     )
     last_edited_by: Mapped[DbUser | None] = relationship(
         foreign_keys=[last_edited_by_id]
@@ -44,7 +45,7 @@ class DbMatchComment(db.Model):
     hidden: Mapped[bool]
     hidden_at: Mapped[datetime | None]
     hidden_by_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
+        db.Uuid, ForeignKey('users.id')
     )
     hidden_by: Mapped[DbUser | None] = relationship(foreign_keys=[hidden_by_id])
 

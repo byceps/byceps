@@ -14,6 +14,7 @@ from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.language.dbmodels import DbLanguage
@@ -44,7 +45,7 @@ class DbSnippet(db.Model):
     name: Mapped[str] = mapped_column(db.UnicodeText, index=True)
     language_code: Mapped[str] = mapped_column(
         db.UnicodeText,
-        db.ForeignKey('languages.code'),
+        ForeignKey('languages.code'),
         index=True,
     )
     language: Mapped[DbLanguage] = relationship()
@@ -77,13 +78,11 @@ class DbSnippetVersion(db.Model):
 
     id: Mapped[SnippetVersionID] = mapped_column(db.Uuid, primary_key=True)
     snippet_id: Mapped[SnippetID] = mapped_column(
-        db.Uuid, db.ForeignKey('snippets.id'), index=True
+        db.Uuid, ForeignKey('snippets.id'), index=True
     )
     snippet: Mapped[DbSnippet] = relationship()
     created_at: Mapped[datetime]
-    creator_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
-    )
+    creator_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
     creator: Mapped[DbUser] = relationship()
     body: Mapped[str] = mapped_column(db.UnicodeText)
 
@@ -113,14 +112,14 @@ class DbCurrentSnippetVersionAssociation(db.Model):
     __tablename__ = 'snippet_current_versions'
 
     snippet_id: Mapped[SnippetID] = mapped_column(
-        db.Uuid, db.ForeignKey('snippets.id'), primary_key=True
+        db.Uuid, ForeignKey('snippets.id'), primary_key=True
     )
     snippet: Mapped[DbSnippet] = relationship(
         backref=backref('current_version_association', uselist=False),
     )
     version_id: Mapped[SnippetVersionID] = mapped_column(
         db.Uuid,
-        db.ForeignKey('snippet_versions.id'),
+        ForeignKey('snippet_versions.id'),
         unique=True,
     )
     version: Mapped[DbSnippetVersion] = relationship()

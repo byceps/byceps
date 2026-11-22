@@ -10,6 +10,7 @@ from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.shop.order.log.models import OrderLogEntryData
@@ -25,7 +26,7 @@ class DbOrderLogEntry(db.Model):
     occurred_at: Mapped[datetime]
     event_type: Mapped[str] = mapped_column(db.UnicodeText, index=True)
     order_id: Mapped[OrderID] = mapped_column(
-        db.Uuid, db.ForeignKey('shop_orders.id'), index=True
+        db.Uuid, ForeignKey('shop_orders.id'), index=True
     )
     data: Mapped[OrderLogEntryData] = mapped_column(db.JSONB)
 

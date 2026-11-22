@@ -9,6 +9,7 @@ byceps.services.seating.dbmodels.seat
 from typing import NamedTuple, TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 
 if TYPE_CHECKING:
@@ -37,7 +38,7 @@ class DbSeat(db.Model):
 
     id: Mapped[SeatID] = mapped_column(db.Uuid, primary_key=True)
     area_id: Mapped[SeatingAreaID] = mapped_column(
-        db.Uuid, db.ForeignKey('seating_areas.id'), index=True
+        db.Uuid, ForeignKey('seating_areas.id'), index=True
     )
     area: Mapped[DbSeatingArea] = relationship(backref='seats')
     coord_x: Mapped[int]
@@ -45,7 +46,7 @@ class DbSeat(db.Model):
     rotation: Mapped[int | None]
     category_id: Mapped[TicketCategoryID] = mapped_column(
         db.Uuid,
-        db.ForeignKey('ticket_categories.id'),
+        ForeignKey('ticket_categories.id'),
         index=True,
     )
     category: Mapped[DbTicketCategory] = relationship()

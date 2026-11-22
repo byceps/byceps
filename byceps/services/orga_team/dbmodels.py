@@ -7,6 +7,7 @@ byceps.services.orga_team.dbmodels
 """
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.party.dbmodels import DbParty
@@ -25,7 +26,7 @@ class DbOrgaTeam(db.Model):
 
     id: Mapped[OrgaTeamID] = mapped_column(db.Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True
+        db.UnicodeText, ForeignKey('parties.id'), index=True
     )
     party: Mapped[DbParty] = relationship()
     title: Mapped[str] = mapped_column(db.UnicodeText)
@@ -46,13 +47,13 @@ class DbMembership(db.Model):
 
     id: Mapped[MembershipID] = mapped_column(db.Uuid, primary_key=True)
     orga_team_id: Mapped[OrgaTeamID] = mapped_column(
-        db.Uuid, db.ForeignKey('orga_teams.id'), index=True
+        db.Uuid, ForeignKey('orga_teams.id'), index=True
     )
     orga_team: Mapped[DbOrgaTeam] = relationship(
         collection_class=set, backref='memberships'
     )
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), index=True
+        db.Uuid, ForeignKey('users.id'), index=True
     )
     user: Mapped[DbUser] = relationship(
         collection_class=set, backref='orga_team_memberships'

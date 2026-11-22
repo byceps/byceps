@@ -16,6 +16,7 @@ else:
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.brand.models import BrandID
@@ -38,10 +39,10 @@ class DbNewsChannel(db.Model):
 
     id: Mapped[NewsChannelID] = mapped_column(db.UnicodeText, primary_key=True)
     brand_id: Mapped[BrandID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('brands.id'), index=True
+        db.UnicodeText, ForeignKey('brands.id'), index=True
     )
     announcement_site_id: Mapped[SiteID | None] = mapped_column(
-        db.UnicodeText, db.ForeignKey('sites.id')
+        db.UnicodeText, ForeignKey('sites.id')
     )
     archived: Mapped[bool]
 
@@ -74,11 +75,11 @@ class DbNewsItem(db.Model):
     id: Mapped[NewsItemID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime]
     brand_id: Mapped[BrandID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('brands.id')
+        db.UnicodeText, ForeignKey('brands.id')
     )
     channel_id: Mapped[NewsChannelID] = mapped_column(
         db.UnicodeText,
-        db.ForeignKey('news_channels.id'),
+        ForeignKey('news_channels.id'),
         index=True,
     )
     channel: Mapped[DbNewsChannel] = relationship()
@@ -119,13 +120,11 @@ class DbNewsItemVersion(db.Model):
 
     id: Mapped[NewsItemVersionID] = mapped_column(db.Uuid, primary_key=True)
     item_id: Mapped[NewsItemID] = mapped_column(
-        db.Uuid, db.ForeignKey('news_items.id'), index=True
+        db.Uuid, ForeignKey('news_items.id'), index=True
     )
     item: Mapped[DbNewsItem] = relationship()
     created_at: Mapped[datetime]
-    creator_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
-    )
+    creator_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
     creator: Mapped[DbUser] = relationship()
     title: Mapped[str] = mapped_column(db.UnicodeText)
     body: Mapped[str] = mapped_column(db.UnicodeText)
@@ -169,14 +168,14 @@ class DbCurrentNewsItemVersionAssociation(db.Model):
     __tablename__ = 'news_item_current_versions'
 
     item_id: Mapped[NewsItemID] = mapped_column(
-        db.Uuid, db.ForeignKey('news_items.id'), primary_key=True
+        db.Uuid, ForeignKey('news_items.id'), primary_key=True
     )
     item: Mapped[DbNewsItem] = relationship(
         backref=backref('current_version_association', uselist=False),
     )
     version_id: Mapped[NewsItemVersionID] = mapped_column(
         db.Uuid,
-        db.ForeignKey('news_item_versions.id'),
+        ForeignKey('news_item_versions.id'),
         unique=True,
         nullable=False,
     )
@@ -195,11 +194,9 @@ class DbNewsImage(db.Model):
 
     id: Mapped[NewsImageID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime]
-    creator_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
-    )
+    creator_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
     item_id: Mapped[NewsItemID] = mapped_column(
-        db.Uuid, db.ForeignKey('news_items.id'), index=True
+        db.Uuid, ForeignKey('news_items.id'), index=True
     )
     item: Mapped[DbNewsItem] = relationship(backref='images')
     number: Mapped[int]
@@ -236,13 +233,13 @@ class DbFeaturedNewsImage(db.Model):
     __tablename__ = 'news_featured_images'
 
     item_id: Mapped[NewsItemID] = mapped_column(
-        db.Uuid, db.ForeignKey('news_items.id'), primary_key=True
+        db.Uuid, ForeignKey('news_items.id'), primary_key=True
     )
     item: Mapped[DbNewsItem] = relationship(
         backref=backref('featured_image_association', uselist=False),
     )
     image_id: Mapped[NewsImageID] = mapped_column(
-        db.Uuid, db.ForeignKey('news_images.id'), unique=True
+        db.Uuid, ForeignKey('news_images.id'), unique=True
     )
     image: Mapped[DbNewsImage] = relationship()
 

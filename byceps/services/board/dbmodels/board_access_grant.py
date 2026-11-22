@@ -11,6 +11,7 @@ from typing import NewType
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.board.models import BoardID
@@ -27,10 +28,10 @@ class DbBoardAccessGrant(db.Model):
 
     id: Mapped[BoardAccessGrantID] = mapped_column(db.Uuid, primary_key=True)
     board_id: Mapped[BoardID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('boards.id'), index=True
+        db.UnicodeText, ForeignKey('boards.id'), index=True
     )
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), index=True
+        db.Uuid, ForeignKey('users.id'), index=True
     )
     created_at: Mapped[datetime]
 

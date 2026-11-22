@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 
 if TYPE_CHECKING:
@@ -39,14 +40,14 @@ class DbCancellationRequest(db.Model):
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime]
     shop_id: Mapped[ShopID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('shops.id'), index=True
+        db.UnicodeText, ForeignKey('shops.id'), index=True
     )
     order_id: Mapped[OrderID] = mapped_column(
-        db.Uuid, db.ForeignKey('shop_orders.id'), unique=True
+        db.Uuid, ForeignKey('shop_orders.id'), unique=True
     )
     order_number: Mapped[OrderNumber] = mapped_column(
         db.UnicodeText,
-        db.ForeignKey('shop_orders.order_number'),
+        ForeignKey('shop_orders.order_number'),
         unique=True,
         nullable=False,
     )

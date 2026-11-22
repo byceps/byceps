@@ -10,6 +10,7 @@ from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -28,7 +29,7 @@ class DbTimeSlot(db.Model):
 
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True
+        db.UnicodeText, ForeignKey('parties.id'), index=True
     )
     type: Mapped[str] = mapped_column(db.UnicodeText, index=True)
     starts_at: Mapped[datetime]
@@ -43,7 +44,7 @@ class DbPresence(DbTimeSlot):
     }
 
     orga_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), nullable=True
+        db.Uuid, ForeignKey('users.id'), nullable=True
     )
     orga: Mapped[DbUser] = relationship()
 

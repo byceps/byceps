@@ -9,6 +9,7 @@ byceps.services.shop.invoice.dbmodels
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.shop.order.models.order import OrderID
@@ -26,7 +27,7 @@ class DbInvoice(db.Model):
 
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     order_id: Mapped[OrderID] = mapped_column(
-        db.Uuid, db.ForeignKey('shop_orders.id'), index=True
+        db.Uuid, ForeignKey('shop_orders.id'), index=True
     )
     number: Mapped[str] = mapped_column(db.UnicodeText, index=True)
     url: Mapped[str | None] = mapped_column(db.UnicodeText)

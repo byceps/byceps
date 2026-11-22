@@ -19,6 +19,7 @@ if TYPE_CHECKING:
 else:
     from sqlalchemy.ext.hybrid import hybrid_property
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.user.models import (
@@ -89,7 +90,7 @@ class DbUser(db.Model):
     )
     email_address_verified: Mapped[bool]
     avatar_id: Mapped[UserAvatarID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('user_avatars.id')
+        db.Uuid, ForeignKey('user_avatars.id')
     )
     avatar: Mapped[DbUserAvatar] = relationship(foreign_keys=[avatar_id])
     initialized: Mapped[bool]
@@ -158,7 +159,7 @@ class DbUserDetail(db.Model):
     __tablename__ = 'user_details'
 
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+        db.Uuid, ForeignKey('users.id'), primary_key=True
     )
     user: Mapped[DbUser] = relationship(
         backref=backref('detail', uselist=False)

@@ -9,6 +9,7 @@ byceps.services.consent.dbmodels
 from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.brand.models import BrandID
@@ -50,10 +51,10 @@ class DbConsentBrandRequirement(db.Model):
     __tablename__ = 'consent_brand_requirements'
 
     brand_id: Mapped[BrandID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True
+        db.UnicodeText, ForeignKey('brands.id'), primary_key=True
     )
     subject_id: Mapped[ConsentSubjectID] = mapped_column(
-        db.Uuid, db.ForeignKey('consent_subjects.id'), primary_key=True
+        db.Uuid, ForeignKey('consent_subjects.id'), primary_key=True
     )
 
     def __init__(self, brand_id: BrandID, subject_id: ConsentSubjectID) -> None:
@@ -67,11 +68,11 @@ class DbConsent(db.Model):
     __tablename__ = 'consents'
 
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+        db.Uuid, ForeignKey('users.id'), primary_key=True
     )
     user: Mapped[DbUser] = relationship()
     subject_id: Mapped[ConsentSubjectID] = mapped_column(
-        db.Uuid, db.ForeignKey('consent_subjects.id'), primary_key=True
+        db.Uuid, ForeignKey('consent_subjects.id'), primary_key=True
     )
     subject: Mapped[DbConsentSubject] = relationship()
     expressed_at: Mapped[datetime]

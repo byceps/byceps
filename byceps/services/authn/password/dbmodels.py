@@ -9,6 +9,7 @@ byceps.services.authn.password.dbmodels
 from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.user.models import PasswordHash, UserID
@@ -20,7 +21,7 @@ class DbCredential(db.Model):
     __tablename__ = 'authn_credentials'
 
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+        db.Uuid, ForeignKey('users.id'), primary_key=True
     )
     password_hash: Mapped[str] = mapped_column(db.UnicodeText)
     updated_at: Mapped[datetime]

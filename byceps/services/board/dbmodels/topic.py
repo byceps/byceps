@@ -10,6 +10,7 @@ from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.board.models import BoardCategoryID, TopicID
@@ -27,20 +28,18 @@ class DbTopic(db.Model):
     id: Mapped[TopicID] = mapped_column(db.Uuid, primary_key=True)
     category_id: Mapped[BoardCategoryID] = mapped_column(
         db.Uuid,
-        db.ForeignKey('board_categories.id'),
+        ForeignKey('board_categories.id'),
         index=True,
         nullable=False,
     )
     category: Mapped[DbBoardCategory] = relationship()
     created_at: Mapped[datetime]
-    creator_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
-    )
+    creator_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
     title: Mapped[str] = mapped_column(db.UnicodeText)
     posting_count: Mapped[int]
     last_updated_at: Mapped[datetime]
     last_updated_by_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
+        db.Uuid, ForeignKey('users.id')
     )
     last_updated_by: Mapped[DbUser] = relationship(
         foreign_keys=[last_updated_by_id]
@@ -48,19 +47,19 @@ class DbTopic(db.Model):
     hidden: Mapped[bool]
     hidden_at: Mapped[datetime | None]
     hidden_by_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
+        db.Uuid, ForeignKey('users.id')
     )
     hidden_by: Mapped[DbUser | None] = relationship(foreign_keys=[hidden_by_id])
     locked: Mapped[bool]
     locked_at: Mapped[datetime | None]
     locked_by_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
+        db.Uuid, ForeignKey('users.id')
     )
     locked_by: Mapped[DbUser | None] = relationship(foreign_keys=[locked_by_id])
     pinned: Mapped[bool]
     pinned_at: Mapped[datetime | None]
     pinned_by_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
+        db.Uuid, ForeignKey('users.id')
     )
     pinned_by: Mapped[DbUser | None] = relationship(foreign_keys=[pinned_by_id])
     posting_limited_to_moderators: Mapped[bool]
@@ -123,10 +122,10 @@ class DbLastTopicView(db.Model):
     __tablename__ = 'board_topics_lastviews'
 
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+        db.Uuid, ForeignKey('users.id'), primary_key=True
     )
     topic_id: Mapped[TopicID] = mapped_column(
-        db.Uuid, db.ForeignKey('board_topics.id'), primary_key=True
+        db.Uuid, ForeignKey('board_topics.id'), primary_key=True
     )
     topic: Mapped[DbTopic] = relationship()
     occurred_at: Mapped[datetime]

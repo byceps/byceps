@@ -10,6 +10,7 @@ from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.user.dbmodels import DbUser
@@ -27,11 +28,11 @@ class DbUserLogEntry(db.Model):
     occurred_at: Mapped[datetime]
     event_type: Mapped[str] = mapped_column(db.UnicodeText, index=True)
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), index=True
+        db.Uuid, ForeignKey('users.id'), index=True
     )
     user: Mapped[DbUser] = relationship(foreign_keys=[user_id])
     initiator_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), index=True
+        db.Uuid, ForeignKey('users.id'), index=True
     )
     initiator: Mapped[DbUser] = relationship(foreign_keys=[initiator_id])
     data: Mapped[UserLogEntryData] = mapped_column(db.JSONB)

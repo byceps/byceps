@@ -13,6 +13,7 @@ from datetime import datetime
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.language.dbmodels import DbLanguage
@@ -39,19 +40,19 @@ class DbPage(db.Model):
 
     id: Mapped[PageID] = mapped_column(db.Uuid, primary_key=True)
     site_id: Mapped[SiteID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('sites.id'), index=True
+        db.UnicodeText, ForeignKey('sites.id'), index=True
     )
     name: Mapped[str] = mapped_column(db.UnicodeText, index=True)
     language_code: Mapped[str] = mapped_column(
         db.UnicodeText,
-        db.ForeignKey('languages.code'),
+        ForeignKey('languages.code'),
         index=True,
     )
     language: Mapped[DbLanguage] = relationship()
     url_path: Mapped[str] = mapped_column(db.UnicodeText, index=True)
     hidden: Mapped[bool]
     nav_menu_id: Mapped[NavMenuID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('site_nav_menus.id')
+        db.Uuid, ForeignKey('site_nav_menus.id')
     )
     nav_menu: Mapped[DbNavMenu] = relationship()
 
@@ -83,13 +84,11 @@ class DbPageVersion(db.Model):
 
     id: Mapped[PageVersionID] = mapped_column(db.Uuid, primary_key=True)
     page_id: Mapped[PageID] = mapped_column(
-        db.Uuid, db.ForeignKey('pages.id'), index=True
+        db.Uuid, ForeignKey('pages.id'), index=True
     )
     page: Mapped[DbPage] = relationship()
     created_at: Mapped[datetime]
-    creator_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
-    )
+    creator_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
     creator: Mapped[DbUser] = relationship()
     title: Mapped[str] = mapped_column(db.UnicodeText)
     head: Mapped[str | None] = mapped_column(db.UnicodeText)
@@ -125,13 +124,13 @@ class DbCurrentPageVersionAssociation(db.Model):
     __tablename__ = 'page_current_versions'
 
     page_id: Mapped[PageID] = mapped_column(
-        db.Uuid, db.ForeignKey('pages.id'), primary_key=True
+        db.Uuid, ForeignKey('pages.id'), primary_key=True
     )
     page: Mapped[DbPage] = relationship(
         backref=backref('current_version_association', uselist=False)
     )
     version_id: Mapped[PageVersionID] = mapped_column(
-        db.Uuid, db.ForeignKey('page_versions.id'), unique=True
+        db.Uuid, ForeignKey('page_versions.id'), unique=True
     )
     version: Mapped[DbPageVersion] = relationship()
 

@@ -7,6 +7,7 @@ byceps.services.shop.product.dbmodels.sequence
 """
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.shop.product.models import ProductNumberSequenceID
@@ -23,7 +24,7 @@ class DbProductNumberSequence(db.Model):
         db.Uuid, primary_key=True
     )
     shop_id: Mapped[ShopID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('shops.id'), index=True
+        db.UnicodeText, ForeignKey('shops.id'), index=True
     )
     prefix: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
     value: Mapped[int]

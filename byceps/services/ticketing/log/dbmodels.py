@@ -10,6 +10,7 @@ from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.ticketing.models.ticket import TicketID
@@ -26,7 +27,7 @@ class DbTicketLogEntry(db.Model):
     occurred_at: Mapped[datetime]
     event_type: Mapped[str] = mapped_column(db.UnicodeText, index=True)
     ticket_id: Mapped[TicketID] = mapped_column(
-        db.Uuid, db.ForeignKey('tickets.id'), index=True
+        db.Uuid, ForeignKey('tickets.id'), index=True
     )
     data: Mapped[TicketLogEntryData] = mapped_column(db.JSONB)
 

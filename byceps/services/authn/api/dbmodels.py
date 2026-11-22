@@ -11,6 +11,7 @@ from uuid import UUID
 
 from sqlalchemy.ext.mutable import MutableList
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.authz.models import PermissionID
@@ -24,9 +25,7 @@ class DbApiToken(db.Model):
 
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime]
-    creator_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
-    )
+    creator_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
     token: Mapped[str] = mapped_column(db.UnicodeText)
     permissions: Mapped[list[PermissionID]] = mapped_column(
         MutableList.as_mutable(db.JSONB)

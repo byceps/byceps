@@ -10,6 +10,7 @@ from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.tourney.models import TourneyID
@@ -27,10 +28,10 @@ class DbTourneyLogEntry(db.Model):
     occurred_at: Mapped[datetime]
     event_type: Mapped[str] = mapped_column(db.UnicodeText)
     tourney_id: Mapped[TourneyID] = mapped_column(
-        db.Uuid, db.ForeignKey('tourneys.id'), index=True
+        db.Uuid, ForeignKey('tourneys.id'), index=True
     )
     initiator_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
+        db.Uuid, ForeignKey('users.id')
     )
     data: Mapped[LogEntryData] = mapped_column(db.JSONB)
 

@@ -10,6 +10,7 @@ from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.brand.models import BrandID
@@ -29,7 +30,7 @@ class DbBadge(db.Model):
     description: Mapped[str | None] = mapped_column(db.UnicodeText)
     image_filename: Mapped[str] = mapped_column(db.UnicodeText)
     brand_id: Mapped[BrandID | None] = mapped_column(
-        db.UnicodeText, db.ForeignKey('brands.id')
+        db.UnicodeText, ForeignKey('brands.id')
     )
     featured: Mapped[bool]
 
@@ -63,11 +64,9 @@ class DbBadgeAwarding(db.Model):
 
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     badge_id: Mapped[BadgeID] = mapped_column(
-        db.Uuid, db.ForeignKey('user_badges.id')
+        db.Uuid, ForeignKey('user_badges.id')
     )
-    awardee_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
-    )
+    awardee_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
     awarded_at: Mapped[datetime]
 
     def __init__(

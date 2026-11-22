@@ -7,6 +7,7 @@ byceps.services.shop.payment.dbmodels
 """
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.shop.storefront.models import StorefrontID
@@ -41,11 +42,11 @@ class DbStorefrontPaymentGateway(db.Model):
     __tablename__ = 'shop_storefront_payment_gateways'
 
     storefront_id: Mapped[StorefrontID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('shop_storefronts.id'), primary_key=True
+        db.UnicodeText, ForeignKey('shop_storefronts.id'), primary_key=True
     )
     payment_gateway_id: Mapped[str] = mapped_column(
         db.UnicodeText,
-        db.ForeignKey('shop_payment_gateways.id'),
+        ForeignKey('shop_payment_gateways.id'),
         primary_key=True,
     )
 

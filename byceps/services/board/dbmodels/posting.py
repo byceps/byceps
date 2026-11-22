@@ -10,6 +10,7 @@ from datetime import datetime
 from uuid import UUID
 
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.board.models import PostingID, ReactionKind, TopicID
@@ -26,17 +27,15 @@ class DbPosting(db.Model):
 
     id: Mapped[PostingID] = mapped_column(db.Uuid, primary_key=True)
     topic_id: Mapped[TopicID] = mapped_column(
-        db.Uuid, db.ForeignKey('board_topics.id'), index=True
+        db.Uuid, ForeignKey('board_topics.id'), index=True
     )
     topic: Mapped[DbTopic] = relationship(backref='postings')
     created_at: Mapped[datetime]
-    creator_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
-    )
+    creator_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
     body: Mapped[str] = mapped_column(db.UnicodeText)
     last_edited_at: Mapped[datetime | None]
     last_edited_by_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
+        db.Uuid, ForeignKey('users.id')
     )
     last_edited_by: Mapped[DbUser | None] = relationship(
         foreign_keys=[last_edited_by_id]
@@ -45,7 +44,7 @@ class DbPosting(db.Model):
     hidden: Mapped[bool]
     hidden_at: Mapped[datetime | None]
     hidden_by_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
+        db.Uuid, ForeignKey('users.id')
     )
     hidden_by: Mapped[DbUser | None] = relationship(foreign_keys=[hidden_by_id])
 
@@ -79,13 +78,13 @@ class DbInitialTopicPostingAssociation(db.Model):
     __tablename__ = 'board_initial_topic_postings'
 
     topic_id: Mapped[TopicID] = mapped_column(
-        db.Uuid, db.ForeignKey('board_topics.id'), primary_key=True
+        db.Uuid, ForeignKey('board_topics.id'), primary_key=True
     )
     topic: Mapped[DbTopic] = relationship(
         backref=backref('initial_topic_posting_association', uselist=False),
     )
     posting_id: Mapped[PostingID] = mapped_column(
-        db.Uuid, db.ForeignKey('board_postings.id'), unique=True
+        db.Uuid, ForeignKey('board_postings.id'), unique=True
     )
     posting: Mapped[DbPosting] = relationship()
 
@@ -103,10 +102,10 @@ class DbPostingReaction(db.Model):
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime]
     posting_id: Mapped[PostingID] = mapped_column(
-        db.Uuid, db.ForeignKey('board_postings.id')
+        db.Uuid, ForeignKey('board_postings.id')
     )
     posting: Mapped[DbPosting] = relationship(backref=backref('reactions'))
-    user_id: Mapped[UserID] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
+    user_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
     user: Mapped[DbUser] = relationship()
     kind: Mapped[ReactionKind] = mapped_column(db.UnicodeText)
 

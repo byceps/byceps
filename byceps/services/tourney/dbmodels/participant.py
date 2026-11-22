@@ -11,6 +11,7 @@ from typing import TYPE_CHECKING
 from uuid import UUID
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 if TYPE_CHECKING:
     hybrid_property = property
@@ -36,14 +37,12 @@ class DbParticipant(db.Model):
 
     id: Mapped[ParticipantID] = mapped_column(db.Uuid, primary_key=True)
     tourney_id: Mapped[TourneyID] = mapped_column(
-        db.Uuid, db.ForeignKey('tourneys.id'), index=True
+        db.Uuid, ForeignKey('tourneys.id'), index=True
     )
     tourney: Mapped[DbTourney] = relationship()
     created_at: Mapped[datetime]
     name: Mapped[str] = mapped_column(db.UnicodeText)
-    manager_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
-    )
+    manager_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
     manager: Mapped[DbUser] = relationship()
 
     def __init__(
@@ -70,11 +69,9 @@ class DbParticipantMembership(db.Model):
 
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     participant_id: Mapped[ParticipantID] = mapped_column(
-        db.Uuid, db.ForeignKey('tourney_participants.id')
+        db.Uuid, ForeignKey('tourney_participants.id')
     )
-    player_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
-    )
+    player_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
     _status: Mapped[str] = mapped_column('status', db.UnicodeText)
 
     def __init__(

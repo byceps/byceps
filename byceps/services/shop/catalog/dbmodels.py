@@ -8,6 +8,7 @@ byceps.services.shop.catalog.dbmodels
 
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.shop.product.models import ProductID
@@ -23,7 +24,7 @@ class DbCatalog(db.Model):
 
     id: Mapped[CatalogID] = mapped_column(db.Uuid, primary_key=True)
     shop_id: Mapped[ShopID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('shops.id'), index=True
+        db.UnicodeText, ForeignKey('shops.id'), index=True
     )
     title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
 
@@ -43,7 +44,7 @@ class DbCollection(db.Model):
 
     id: Mapped[CollectionID] = mapped_column(db.Uuid, primary_key=True)
     catalog_id: Mapped[CatalogID] = mapped_column(
-        db.Uuid, db.ForeignKey('shop_catalogs.id'), index=True
+        db.Uuid, ForeignKey('shop_catalogs.id'), index=True
     )
     title: Mapped[str] = mapped_column(db.UnicodeText)
     position: Mapped[int] = mapped_column(db.Integer)
@@ -73,12 +74,12 @@ class DbCatalogProduct(db.Model):
     id: Mapped[CatalogProductID] = mapped_column(db.Uuid, primary_key=True)
     collection_id: Mapped[CollectionID] = mapped_column(
         db.Uuid,
-        db.ForeignKey('shop_catalog_collections.id'),
+        ForeignKey('shop_catalog_collections.id'),
         index=True,
         nullable=False,
     )
     product_id: Mapped[ProductID] = mapped_column(
-        db.Uuid, db.ForeignKey('shop_products.id'), index=True
+        db.Uuid, ForeignKey('shop_products.id'), index=True
     )
     position: Mapped[int] = mapped_column(db.Integer)
 

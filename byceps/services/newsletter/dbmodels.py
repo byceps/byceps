@@ -10,6 +10,7 @@ from datetime import datetime
 from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 
 if TYPE_CHECKING:
@@ -42,10 +43,10 @@ class DbSubscription(db.Model):
     __tablename__ = 'newsletter_subscriptions'
 
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+        db.Uuid, ForeignKey('users.id'), primary_key=True
     )
     list_id: Mapped[ListID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('newsletter_lists.id'), primary_key=True
+        db.UnicodeText, ForeignKey('newsletter_lists.id'), primary_key=True
     )
 
 
@@ -57,10 +58,10 @@ class DbSubscriptionUpdate(db.Model):
     __tablename__ = 'newsletter_subscription_updates'
 
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+        db.Uuid, ForeignKey('users.id'), primary_key=True
     )
     list_id: Mapped[ListID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('newsletter_lists.id'), primary_key=True
+        db.UnicodeText, ForeignKey('newsletter_lists.id'), primary_key=True
     )
     expressed_at: Mapped[datetime] = mapped_column(primary_key=True)
     _state: Mapped[str] = mapped_column('state', db.UnicodeText)

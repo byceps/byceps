@@ -10,6 +10,7 @@ from datetime import datetime
 
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.board.models import BoardCategoryID, BoardID
@@ -30,7 +31,7 @@ class DbBoardCategory(db.Model):
 
     id: Mapped[BoardCategoryID] = mapped_column(db.Uuid, primary_key=True)
     board_id: Mapped[BoardID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('boards.id'), index=True
+        db.UnicodeText, ForeignKey('boards.id'), index=True
     )
     position: Mapped[int] = mapped_column(db.Integer)
     slug: Mapped[str] = mapped_column(db.UnicodeText)
@@ -40,7 +41,7 @@ class DbBoardCategory(db.Model):
     posting_count: Mapped[int]
     last_posting_updated_at: Mapped[datetime | None]
     last_posting_updated_by_id: Mapped[UserID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
+        db.Uuid, ForeignKey('users.id')
     )
     last_posting_updated_by: Mapped[DbUser | None] = relationship()
     hidden: Mapped[bool]
@@ -84,10 +85,10 @@ class DbLastCategoryView(db.Model):
     __tablename__ = 'board_categories_lastviews'
 
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+        db.Uuid, ForeignKey('users.id'), primary_key=True
     )
     category_id: Mapped[BoardCategoryID] = mapped_column(
-        db.Uuid, db.ForeignKey('board_categories.id'), primary_key=True
+        db.Uuid, ForeignKey('board_categories.id'), primary_key=True
     )
     category: Mapped[DbBoardCategory] = relationship()
     occurred_at: Mapped[datetime]

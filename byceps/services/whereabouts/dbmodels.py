@@ -20,6 +20,7 @@ else:
 
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -78,7 +79,7 @@ class DbWhereaboutsClient(db.Model):
     location: Mapped[str | None] = mapped_column(db.UnicodeText)
     description: Mapped[str | None] = mapped_column(db.UnicodeText)
     config_id: Mapped[WhereaboutsClientConfigID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('whereabouts_client_configs.id')
+        db.Uuid, ForeignKey('whereabouts_client_configs.id')
     )
 
     def __init__(
@@ -114,7 +115,7 @@ class DbWhereaboutsClientLivelinessStatus(db.Model):
     __tablename__ = 'whereabouts_client_liveliness_statuses'
 
     client_id: Mapped[WhereaboutsClientID] = mapped_column(
-        db.Uuid, db.ForeignKey('whereabouts_clients.id'), primary_key=True
+        db.Uuid, ForeignKey('whereabouts_clients.id'), primary_key=True
     )
     signed_on: Mapped[bool]
     latest_activity_at: Mapped[datetime]
@@ -132,7 +133,7 @@ class DbWhereabouts(db.Model):
 
     id: Mapped[WhereaboutsID] = mapped_column(db.Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True
+        db.UnicodeText, ForeignKey('parties.id'), index=True
     )
     name: Mapped[str] = mapped_column(db.UnicodeText, index=True)
     description: Mapped[str] = mapped_column(db.UnicodeText)
@@ -165,7 +166,7 @@ class DbWhereaboutsUserSound(db.Model):
     __tablename__ = 'whereabouts_user_sounds'
 
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+        db.Uuid, ForeignKey('users.id'), primary_key=True
     )
     name: Mapped[str] = mapped_column(db.UnicodeText)
 
@@ -180,10 +181,10 @@ class DbWhereaboutsStatus(db.Model):
     __tablename__ = 'whereabouts_statuses'
 
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), primary_key=True, index=True
+        db.Uuid, ForeignKey('users.id'), primary_key=True, index=True
     )
     whereabouts_id: Mapped[WhereaboutsID] = mapped_column(
-        db.Uuid, db.ForeignKey('whereabouts.id')
+        db.Uuid, ForeignKey('whereabouts.id')
     )
     set_at: Mapped[datetime]
 
@@ -202,10 +203,10 @@ class DbWhereaboutsUpdate(db.Model):
 
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), index=True
+        db.Uuid, ForeignKey('users.id'), index=True
     )
     whereabouts_id: Mapped[WhereaboutsID] = mapped_column(
-        db.Uuid, db.ForeignKey('whereabouts.id')
+        db.Uuid, ForeignKey('whereabouts.id')
     )
     created_at: Mapped[datetime]
     _source_address: Mapped[str | None] = mapped_column(  # noqa: UP007

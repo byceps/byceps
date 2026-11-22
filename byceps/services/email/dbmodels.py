@@ -7,6 +7,7 @@ byceps.services.email.dbmodels
 """
 
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.brand.models import BrandID
@@ -18,7 +19,7 @@ class DbEmailConfig(db.Model):
     __tablename__ = 'email_configs'
 
     brand_id: Mapped[BrandID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True
+        db.UnicodeText, ForeignKey('brands.id'), primary_key=True
     )
     sender_address: Mapped[str] = mapped_column(db.UnicodeText)
     sender_name: Mapped[str | None] = mapped_column(db.UnicodeText)

@@ -11,6 +11,7 @@ from datetime import datetime
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.ext.orderinglist import ordering_list
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.brand.dbmodels import DbBrand
@@ -28,7 +29,7 @@ class DbGallery(db.Model):
     id: Mapped[GalleryID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime]
     brand_id: Mapped[BrandID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('brands.id'), index=True
+        db.UnicodeText, ForeignKey('brands.id'), index=True
     )
     brand: Mapped[DbBrand] = relationship(
         backref=backref(
@@ -69,7 +70,7 @@ class DbGalleryImage(db.Model):
     id: Mapped[GalleryImageID] = mapped_column(db.Uuid, primary_key=True)
     created_at: Mapped[datetime]
     gallery_id: Mapped[GalleryID] = mapped_column(
-        db.Uuid, db.ForeignKey('galleries.id'), index=True, nullable=False
+        db.Uuid, ForeignKey('galleries.id'), index=True, nullable=False
     )
     gallery: Mapped[DbGallery] = relationship(
         backref=backref(
@@ -109,13 +110,13 @@ class DbGalleryTitleImage(db.Model):
     __tablename__ = 'gallery_title_images'
 
     gallery_id: Mapped[GalleryID] = mapped_column(
-        db.Uuid, db.ForeignKey('galleries.id'), primary_key=True
+        db.Uuid, ForeignKey('galleries.id'), primary_key=True
     )
     gallery: Mapped[DbGallery] = relationship(
         backref=backref('title_image_association', uselist=False),
     )
     image_id: Mapped[GalleryImageID] = mapped_column(
-        db.Uuid, db.ForeignKey('gallery_images.id')
+        db.Uuid, ForeignKey('gallery_images.id')
     )
     image: Mapped[DbGalleryImage] = relationship()
 

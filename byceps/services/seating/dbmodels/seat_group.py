@@ -10,6 +10,7 @@ from uuid import UUID
 
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.party.models import PartyID
@@ -33,10 +34,10 @@ class DbSeatGroup(db.Model):
 
     id: Mapped[SeatGroupID] = mapped_column(db.Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True
+        db.UnicodeText, ForeignKey('parties.id'), index=True
     )
     ticket_category_id: Mapped[TicketCategoryID] = mapped_column(
-        db.Uuid, db.ForeignKey('ticket_categories.id')
+        db.Uuid, ForeignKey('ticket_categories.id')
     )
     ticket_category: Mapped[DbTicketCategory] = relationship()
     seat_quantity: Mapped[int] = mapped_column(db.Integer)
@@ -77,14 +78,14 @@ class DbSeatGroupAssignment(db.Model):
 
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     group_id: Mapped[SeatGroupID] = mapped_column(
-        db.Uuid, db.ForeignKey('seat_groups.id'), index=True
+        db.Uuid, ForeignKey('seat_groups.id'), index=True
     )
     group: Mapped[DbSeatGroup] = relationship(
         collection_class=set, backref='assignments'
     )
     seat_id: Mapped[SeatID] = mapped_column(
         db.Uuid,
-        db.ForeignKey('seats.id'),
+        ForeignKey('seats.id'),
         unique=True,
         index=True,
     )
@@ -117,7 +118,7 @@ class DbSeatGroupOccupancy(db.Model):
     id: Mapped[UUID] = mapped_column(db.Uuid, primary_key=True)
     seat_group_id: Mapped[SeatGroupID] = mapped_column(
         db.Uuid,
-        db.ForeignKey('seat_groups.id'),
+        ForeignKey('seat_groups.id'),
         unique=True,
         index=True,
     )
@@ -126,7 +127,7 @@ class DbSeatGroupOccupancy(db.Model):
     )
     ticket_bundle_id: Mapped[TicketBundleID] = mapped_column(
         db.Uuid,
-        db.ForeignKey('ticket_bundles.id'),
+        ForeignKey('ticket_bundles.id'),
         unique=True,
         index=True,
     )

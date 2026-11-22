@@ -12,6 +12,7 @@ from typing import TYPE_CHECKING
 
 from sqlalchemy.dialects import postgresql
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 
 if TYPE_CHECKING:
@@ -32,7 +33,7 @@ class DbGuestServerSetting(db.Model):
     __tablename__ = 'guest_server_settings'
 
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('parties.id'), primary_key=True
+        db.UnicodeText, ForeignKey('parties.id'), primary_key=True
     )
     _netmask: Mapped[str | None] = mapped_column('netmask', postgresql.INET)
     _gateway: Mapped[str | None] = mapped_column('gateway', postgresql.INET)
@@ -99,13 +100,11 @@ class DbGuestServer(db.Model):
 
     id: Mapped[ServerID] = mapped_column(db.Uuid, primary_key=True)
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('parties.id'), index=True
+        db.UnicodeText, ForeignKey('parties.id'), index=True
     )
     created_at: Mapped[datetime]
-    creator_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id')
-    )
-    owner_id: Mapped[UserID] = mapped_column(db.Uuid, db.ForeignKey('users.id'))
+    creator_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
+    owner_id: Mapped[UserID] = mapped_column(db.Uuid, ForeignKey('users.id'))
     description: Mapped[str | None] = mapped_column(db.UnicodeText)
     notes_owner: Mapped[str | None] = mapped_column(db.UnicodeText)
     notes_admin: Mapped[str | None] = mapped_column(db.UnicodeText)
@@ -145,7 +144,7 @@ class DbGuestServerAddress(db.Model):
 
     id: Mapped[AddressID] = mapped_column(db.Uuid, primary_key=True)
     server_id: Mapped[ServerID] = mapped_column(
-        db.Uuid, db.ForeignKey('guest_servers.id'), index=True
+        db.Uuid, ForeignKey('guest_servers.id'), index=True
     )
     server: Mapped[DbGuestServer] = relationship(backref='addresses')
     created_at: Mapped[datetime] = mapped_column(db.DateTime)

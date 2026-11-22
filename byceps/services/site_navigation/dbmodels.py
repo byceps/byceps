@@ -9,6 +9,7 @@ byceps.services.site_navigation.dbmodels
 from typing import TYPE_CHECKING
 
 from sqlalchemy.orm import backref, Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 
 if TYPE_CHECKING:
@@ -33,18 +34,18 @@ class DbNavMenu(db.Model):
 
     id: Mapped[NavMenuID] = mapped_column(db.Uuid, primary_key=True)
     site_id: Mapped[SiteID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('sites.id'), index=True
+        db.UnicodeText, ForeignKey('sites.id'), index=True
     )
     name: Mapped[str] = mapped_column(db.UnicodeText, index=True)
     language_code: Mapped[str] = mapped_column(
         db.UnicodeText,
-        db.ForeignKey('languages.code'),
+        ForeignKey('languages.code'),
         index=True,
     )
     language: Mapped[DbLanguage] = relationship()
     hidden: Mapped[bool]
     parent_menu_id: Mapped[NavMenuID | None] = mapped_column(
-        db.Uuid, db.ForeignKey('site_nav_menus.id')
+        db.Uuid, ForeignKey('site_nav_menus.id')
     )
 
     def __init__(
@@ -73,7 +74,7 @@ class DbNavItem(db.Model):
 
     id: Mapped[NavItemID] = mapped_column(db.Uuid, primary_key=True)
     menu_id: Mapped[NavMenuID] = mapped_column(
-        db.Uuid, db.ForeignKey('site_nav_menus.id'), index=True
+        db.Uuid, ForeignKey('site_nav_menus.id'), index=True
     )
     menu: Mapped[DbNavMenu] = relationship(
         backref=backref(

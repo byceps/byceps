@@ -7,6 +7,7 @@ byceps.services.orga.dbmodels
 """
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.brand.dbmodels import DbBrand
@@ -21,11 +22,11 @@ class DbOrgaFlag(db.Model):
     __tablename__ = 'orga_flags'
 
     user_id: Mapped[UserID] = mapped_column(
-        db.Uuid, db.ForeignKey('users.id'), primary_key=True
+        db.Uuid, ForeignKey('users.id'), primary_key=True
     )
     user: Mapped[DbUser] = relationship()
     brand_id: Mapped[BrandID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('brands.id'), primary_key=True
+        db.UnicodeText, ForeignKey('brands.id'), primary_key=True
     )
     brand: Mapped[DbBrand] = relationship()
 

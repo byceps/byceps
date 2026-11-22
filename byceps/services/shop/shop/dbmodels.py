@@ -10,6 +10,7 @@ from typing import Any, TYPE_CHECKING
 
 from moneyed import Currency, get_currency
 from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.schema import ForeignKey
 
 
 if TYPE_CHECKING:
@@ -32,7 +33,7 @@ class DbShop(db.Model):
     id: Mapped[ShopID] = mapped_column(db.UnicodeText, primary_key=True)
     brand_id: Mapped[BrandID] = mapped_column(
         db.UnicodeText,
-        db.ForeignKey('brands.id'),
+        ForeignKey('brands.id'),
         unique=True,
         index=True,
     )

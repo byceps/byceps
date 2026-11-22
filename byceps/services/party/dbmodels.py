@@ -9,6 +9,7 @@ byceps.services.party.dbmodels
 from datetime import datetime
 
 from sqlalchemy.orm import Mapped, mapped_column, relationship
+from sqlalchemy.schema import ForeignKey
 
 from byceps.database import db
 from byceps.services.brand.dbmodels import DbBrand
@@ -24,7 +25,7 @@ class DbParty(db.Model):
 
     id: Mapped[PartyID] = mapped_column(db.UnicodeText, primary_key=True)
     brand_id: Mapped[BrandID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('brands.id'), index=True
+        db.UnicodeText, ForeignKey('brands.id'), index=True
     )
     brand: Mapped[DbBrand] = relationship(backref='parties')
     title: Mapped[str] = mapped_column(db.UnicodeText, unique=True)
@@ -74,7 +75,7 @@ class DbPartySetting(db.Model):
     __tablename__ = 'party_settings'
 
     party_id: Mapped[PartyID] = mapped_column(
-        db.UnicodeText, db.ForeignKey('parties.id'), primary_key=True
+        db.UnicodeText, ForeignKey('parties.id'), primary_key=True
     )
     name: Mapped[str] = mapped_column(db.UnicodeText, primary_key=True)
     value: Mapped[str] = mapped_column(db.UnicodeText)
